@@ -13,7 +13,15 @@
         </ul>
       </div>
     </nav>
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
+    <!-- <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" /> -->
+    <a href="#">
+      <img
+        src="../assets/Icons/bars-regular.svg"
+        alt="menu"
+        class="menu-icon"
+        v-show="mobile"
+        @click="toggleMobileNav"
+    /></a>
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" to="#">Home</router-link>
@@ -26,11 +34,11 @@
 </template>
 
 <script>
-import { menuIcon } from "../assets/Icons/bars-regular.svg";
+// import { menuIcon } from "../assets/Icons/bars-regular.svg";
 export default {
   name: "Navigation",
   components: {
-    menuIcon,
+    // menuIcon,
   },
   data() {
     return {
@@ -47,7 +55,7 @@ export default {
   methods: {
     checkScreen() {
       this.windowWidth = window.innerWidth;
-      if (this.windowWidth <= 992) {
+      if (this.windowWidth <= 750) {
         this.mobile = true;
         return;
       } else {
