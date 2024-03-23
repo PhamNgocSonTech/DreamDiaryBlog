@@ -1,6 +1,6 @@
 <template>
   <div class="blog-card">
-    <div class="icons">
+    <div v-show="editPost" class="icons">
       <div class="icon">
         <!-- <img src="../assets/Icons/edit-regular.svg" class="icon" /> -->
         <inline-svg
@@ -24,7 +24,7 @@
       <router-link to="#" class="link">
         View The Post
         <!-- <img src="../assets/Icons/arrow-right-light.svg" class="arrow" /> -->
-        <inline-svg
+        <InlineSvg
           :src="require('../assets/Icons/arrow-right-light.svg')"
           class="arrow"
         />
@@ -38,13 +38,16 @@ import InlineSvg from "vue-inline-svg";
 export default {
   name: "Blog Card",
   props: ["post"],
+  setup() {},
   components: { InlineSvg },
+  computed: {
+    editPost() {
+      return this.$store.state.editPost;
+    },
+  },
   methods: {
     getImgSrc(photo) {
       return require(`../assets/blogCards/${photo}.jpg`);
-    },
-    getIconSvg(name) {
-      return require(`../assets/Icons/${name}.svg`);
     },
   },
 };

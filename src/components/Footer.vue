@@ -7,38 +7,47 @@
           <ul>
             <li>
               <a href="#">
-                <img
+                <!-- <img
                   src="../assets/Icons/youtube-brands.svg"
                   alt="YouTube"
                   class="svg-icon"
-              /></a>
+                /> -->
+                <InlineSvg
+                  :src="require('../assets/Icons/youtube-brands.svg')"
+                  alt="YouTube"
+                  class="svg-icon"
+                />
+              </a>
             </li>
             <li>
               <!-- <a href="#"><TwitterIcon class="svg-icon" /></a> -->
               <a href="#">
-                <img
-                  src="../assets/Icons/twitter-brands.svg"
+                <InlineSvg
+                  :src="require('../assets/Icons/twitter-brands.svg')"
                   alt="Twitter"
                   class="svg-icon"
-              /></a>
+                />
+              </a>
             </li>
             <li>
               <!-- <a href="#"><InstagramsIcon class="svg-icon" /></a> -->
               <a href="#">
-                <img
-                  src="../assets/Icons/instagram-brands.svg"
+                <InlineSvg
+                  :src="require('../assets/Icons/instagram-brands.svg')"
                   alt="instgram"
                   class="svg-icon"
-              /></a>
+                />
+              </a>
             </li>
             <li>
               <!-- <a href="#"><LinkedinIcon class="svg-icon" /></a> -->
               <a href="#">
-                <img
-                  src="../assets/Icons/linkedin-brands.svg"
+                <InlineSvg
+                  :src="require('../assets/Icons/linkedin-brands.svg')"
                   alt="linkedin"
                   class="svg-icon"
-              /></a>
+                />
+              </a>
             </li>
           </ul>
         </div>
@@ -63,17 +72,11 @@
 </template>
 
 <script>
-// import YouTubeIcon from "../assets/Icons/youtube-brands.svg";
-// import TwitterIcon from "../assets/Icons/twitter-brands.svg";
-// import InstagramsIcon from "../assets/Icons/instagram-brands.svg";
-// import LinkedinIcon from "../assets/Icons/linkedin-brands.svg";
+import InlineSvg from "vue-inline-svg";
 export default {
   name: "Footer",
   components: {
-    // YouTubeIcon,
-    // TwitterIcon,
-    // InstagramsIcon,
-    // LinkedinIcon,
+    InlineSvg,
   },
 };
 </script>

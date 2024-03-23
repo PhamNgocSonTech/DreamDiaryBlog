@@ -6,8 +6,8 @@
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">
-          <router-link class="link" to="#">Home</router-link>
-          <router-link class="link" to="#">Blogs</router-link>
+          <router-link class="link" to="/">Home</router-link>
+          <router-link class="link" to="/blogs">Blogs</router-link>
           <router-link class="link" to="#">Create Blog</router-link>
           <router-link class="link" to="#">Login/Register</router-link>
         </ul>
@@ -15,13 +15,21 @@
     </nav>
     <!-- <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" /> -->
     <a href="#">
-      <img
+      <!-- <img
         src="../assets/Icons/bars-regular.svg"
         alt="menu"
         class="menu-icon"
         v-show="mobile"
         @click="toggleMobileNav"
-    /></a>
+    /> -->
+      <InlineSvg
+        :src="require('../assets/Icons/bars-regular.svg')"
+        alt="menu"
+        class="menu-icon"
+        v-show="mobile"
+        @click="toggleMobileNav"
+      />
+    </a>
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" to="#">Home</router-link>
@@ -34,10 +42,13 @@
 </template>
 
 <script>
+import InlineSvg from "vue-inline-svg";
+
 // import { menuIcon } from "../assets/Icons/bars-regular.svg";
 export default {
   name: "Navigation",
   components: {
+    InlineSvg,
     // menuIcon,
   },
   data() {

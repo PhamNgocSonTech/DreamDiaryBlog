@@ -18,15 +18,29 @@
         </div>
       </div>
     </div>
+    <div class="updates">
+      <div class="container">
+        <h2>Never miss a post. Register free account to more post!</h2>
+        <router-link to="#" class="router-button">
+          Register for SBlogs
+          <InlineSvg
+            :src="require('../assets/Icons/arrow-right-light.svg')"
+            class="arrow"
+          />
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import BlogPost from "@/components/BlogPost.vue";
 import BlogCard from "@/components/BlogCard.vue";
+import InlineSvg from "vue-inline-svg";
+
 export default {
   name: "Home",
-  components: { BlogPost, BlogCard },
+  components: { BlogPost, BlogCard, InlineSvg },
   data() {
     return {
       welcomeScreen: {
@@ -50,33 +64,12 @@ export default {
           blogCoverPhoto: "designed-for-everyone",
         },
       ],
-
-      sampleBlogCards: [
-        {
-          blogTitle: "Blog Card #1",
-          blogCoverPhoto: "stock-1",
-          blogDate: "May 1, 2021",
-        },
-
-        {
-          blogTitle: "Blog Card #2",
-          blogCoverPhoto: "stock-2",
-          blogDate: "May 1, 2021",
-        },
-
-        {
-          blogTitle: "Blog Card #3",
-          blogCoverPhoto: "stock-3",
-          blogDate: "May 1, 2021",
-        },
-
-        {
-          blogTitle: "Blog Card #4",
-          blogCoverPhoto: "stock-4",
-          blogDate: "May 1, 2021",
-        },
-      ],
     };
+  },
+  computed: {
+    sampleBlogCards() {
+      return this.$store.state.sampleBlogCards;
+    },
   },
 };
 </script>
