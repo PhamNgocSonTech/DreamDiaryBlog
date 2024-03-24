@@ -58,7 +58,7 @@
             <router-link v-if="admin" class="link" to="/createBlog"
               >Create Post</router-link
             >
-            <router-link v-if="!user" class="link" to="/loginRegister"
+            <router-link v-if="!user" class="link" to="/login"
               >Login In / Register</router-link
             >
           </ul>

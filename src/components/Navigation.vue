@@ -9,7 +9,7 @@
           <router-link class="link" to="/">Home</router-link>
           <router-link class="link" to="/blogs">Blogs</router-link>
           <router-link class="link" to="#">Create Blog</router-link>
-          <router-link class="link" to="#">Login/Register</router-link>
+          <router-link class="link" to="/login">Login/Register</router-link>
         </ul>
       </div>
     </nav>
@@ -32,10 +32,10 @@
     </a>
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
-        <router-link class="link" to="#">Home</router-link>
-        <router-link class="link" to="#">Blogs</router-link>
+        <router-link class="link" to="/">Home</router-link>
+        <router-link class="link" to="/blogs">Blogs</router-link>
         <router-link class="link" to="#">Create Blog</router-link>
-        <router-link class="link" to="#">Login/Register</router-link>
+        <router-link class="link" to="/login">Login/Register</router-link>
       </ul>
     </transition>
   </header>

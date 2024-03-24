@@ -1,21 +1,67 @@
 <template>
   <div class="app-wrapper">
     <div class="app">
-      <Navigation />
+      <Navigation v-if="!navigation" />
       <router-view />
-      <Footer />
+      <Footer v-if="!navigation" />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 import Footer from "./components/Footer.vue";
 import Navigation from "./components/Navigation.vue";
 
-export default {
-  name: "App",
-  components: { Navigation, Footer },
+// name: "App",
+// components: { Navigation, Footer },
+const navigation = ref(null);
+const route = useRoute();
+
+const checkRoute = () => {
+  if (
+    route.name === "Login" ||
+    route.name === "Register" ||
+    route.name === "ForgotPassword"
+  ) {
+    navigation.value = true;
+  } else {
+    navigation.value = false;
+  }
+  console.log("route name:", route.name);
 };
+watchEffect(() => {
+  checkRoute();
+});
+
+// return { checkRoute };
+// data() {
+//   return {
+//     navigation: null,
+//   };
+// },
+// created() {
+//   this.checkRoute();
+// },
+// methods: {
+//   checkRoute() {
+//     if (
+//       this.$route.name === "Login" ||
+//       this.$route.name === "Register" ||
+//       this.$route.name === "ForgotPassword"
+//     ) {
+//       this.navigation = true;
+//       return;
+//     }
+//     this.navigation = false;
+//   },
+// },
+// watch: {
+//   $route() {
+//     this.checkRoute();
+//   },
+// },
 </script>
 
 <style lang="scss">
