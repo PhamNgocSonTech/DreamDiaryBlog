@@ -2,7 +2,7 @@
   <header>
     <nav class="container">
       <div class="branding">
-        <router-link class="header" to="/">SBlog</router-link>
+        <router-link class="header" to="/">Dream Diary Blogs</router-link>
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">

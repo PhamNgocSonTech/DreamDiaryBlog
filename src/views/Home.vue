@@ -22,7 +22,7 @@
       <div class="container">
         <h2>Never miss a post. Register free account to more post!</h2>
         <router-link to="#" class="router-button">
-          Register for SBlogs
+          Register for Dream Diary Blogs
           <InlineSvg
             :src="require('../assets/Icons/arrow-right-light.svg')"
             class="arrow"
@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       welcomeScreen: {
-        title: "Welcome to SBlog",
+        title: "Welcome to Dream Diary Blogs",
         blogPost:
           "Weekly blog article with all things programming including HTML, CSS and JS.",
         welcomeScreen: true,

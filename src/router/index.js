@@ -34,7 +34,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | SBlogs`;
+  document.title = `${to.meta.title} | Dream Diary Blogs`;
   next();
 });
 

@@ -3,7 +3,7 @@
     <div class="container">
       <div class="left">
         <div class="col-1">
-          <router-link class="header" to="/">SBlogs</router-link>
+          <router-link class="header" to="/">Dream Diary Blogs</router-link>
           <ul>
             <li>
               <a href="#">

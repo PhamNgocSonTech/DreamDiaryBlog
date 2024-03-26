@@ -2,10 +2,10 @@
   <div class="form-wrap">
     <form class="login">
       <p class="login-register">
-        Don't have an account
+        Don't have an account?
         <router-link class="router-link" to="/register">Register</router-link>
       </p>
-      <h2>Login to SBlogs</h2>
+      <h2>Login to Dream Diary Blogs</h2>
       <div class="inputs">
         <div class="input">
           <input type="email" placeholder="Email" v-model="email" />
