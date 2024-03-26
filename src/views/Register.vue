@@ -102,57 +102,39 @@ export default {
     const router = useRouter();
 
     const register = async () => {
-      try {
-        error.value = false;
-        errorMsg.value = "";
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email.value,
-          password.value
-        );
-        console.log("User Credential: ", userCredential);
+      if (
+        firstName.value !== "" &&
+        lastName.value !== "" &&
+        username.value !== "" &&
+        email.value !== "" &&
+        password.value !== ""
+      ) {
+        try {
+          error.value = false;
+          errorMsg.value = "";
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email.value,
+            password.value
+          );
+          console.log("User Credential: ", userCredential);
 
-        const userCollection = collection(db, "users");
-        await addDoc(userCollection, {
-          firstName: firstName.value,
-          lastName: lastName.value,
-          username: username.value,
-          email: email.value,
-        });
-        router.push("/");
-      } catch (err) {
+          const userCollection = collection(db, "users");
+          await addDoc(userCollection, {
+            firstName: firstName.value,
+            lastName: lastName.value,
+            username: username.value,
+            email: email.value,
+          });
+          router.push("/");
+        } catch (err) {
+          error.value = true;
+          errorMsg.value = err.message;
+        }
+      } else {
         error.value = true;
         errorMsg.value = "Please fill out all the fields!";
-        const errorCode = err.message;
-        console.log(errorCode);
       }
-      // const userCredential = createUserWithEmailAndPassword(
-      //   auth,
-      //   email.value,
-      //   password.value
-      // );
-      // createUserWithEmailAndPassword(auth, email, password)
-      //   .then((userCredential) => {
-      //     // Signed up
-      //     const user = userCredential.user;
-      //     console.log("user ", user);
-      //   })
-      //   .catch((error) => {
-      //     const errorCode = error.code;
-      //     const errorMessage = error.message;
-      //     console.log("Error Code", errorCode);
-      //     console.log("Error Message", errorMessage);
-      //   });
-      // // const user = userCredential.user;
-      // const userCollection = collection(db, "users");
-      // await addDoc(userCollection, {
-      //   firstName: firstName.value,
-      //   lastName: lastName.value,
-      //   username: username.value,
-      //   email: email.value,
-      // });
-      // // console.log("result ", result);
-      // router.push("/");
     };
     return {
       register,
@@ -165,53 +147,6 @@ export default {
       errorMsg,
     };
   },
-
-  // data() {
-  //   return {
-  //     firstName: "",
-  //     lastName: "",
-  //     username: "",
-  //     email: "",
-  //     password: "",
-  //     error: "",
-  //     errorMsg: "",
-  //   };
-  // },
-  // methods: {
-  //   async register() {
-  //     if (
-  //       this.email !== "" &&
-  //       this.firstName !== "" &&
-  //       this.lastName !== "" &&
-  //       this.password !== "" &&
-  //       this.username !== ""
-  //     ) {
-  //       this.error = false;
-  //       this.errorMsg = "";
-  //       // const firebaseAuth = getAuth();
-  //       const userCredential = createUserWithEmailAndPassword(
-  //         auth,
-  //         this.email,
-  //         this.password
-  //       );
-  //       userCredential.user;
-  //       const userCollection = collection(db, "users");
-
-  //       const dataObj = {
-  //         firstName: this.firstName,
-  //         lastName: this.lastName,
-  //         username: this.username,
-  //         email: this.email,
-  //       };
-  //       await addDoc(userCollection, dataObj);
-  //       this.$router.push({ name: "Home" });
-  //       return;
-  //     }
-  //     this.error = true;
-  //     this.errorMsg = "Fill out all the fields Please!";
-  //     return;
-  //   },
-  // },
 };
 </script>
 

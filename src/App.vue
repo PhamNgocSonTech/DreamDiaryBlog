@@ -8,32 +8,45 @@
   </div>
 </template>
 
-<script setup>
-import { ref, watchEffect } from "vue";
+<script>
+import { onMounted, ref, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import Footer from "./components/Footer.vue";
 import Navigation from "./components/Navigation.vue";
+import { auth } from "@/firebase/firebaseInit";
 
-// name: "App",
-// components: { Navigation, Footer },
-const navigation = ref(null);
-const route = useRoute();
+export default {
+  name: "App",
+  components: { Navigation, Footer },
 
-const checkRoute = () => {
-  if (
-    route.name === "Login" ||
-    route.name === "Register" ||
-    route.name === "ForgotPassword"
-  ) {
-    navigation.value = true;
-  } else {
-    navigation.value = false;
-  }
-  console.log("route name:", route.name);
+  setup() {
+    const navigation = ref(null);
+    const route = useRoute();
+
+    const checkRoute = () => {
+      if (
+        route.name === "Login" ||
+        route.name === "Register" ||
+        route.name === "ForgotPassword"
+      ) {
+        navigation.value = true;
+      } else {
+        navigation.value = false;
+      }
+      console.log("route name:", route.name);
+    };
+    onMounted(() => {
+      checkRoute();
+      console.log("current user:", auth.currentUser);
+    });
+    watchEffect(() => {
+      checkRoute();
+    });
+    return {
+      navigation,
+    };
+  },
 };
-watchEffect(() => {
-  checkRoute();
-});
 
 // return { checkRoute };
 // data() {

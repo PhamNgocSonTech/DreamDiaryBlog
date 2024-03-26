@@ -1,6 +1,10 @@
 <template>
   <div class="reset-password">
-    <Modal v-if="modalActive" v-on:close-modal="closeModal" />
+    <Modal
+      v-if="modalActive"
+      :modalMessage="modalMessage"
+      v-on:close-modal="closeModal"
+    />
     <Loading v-if="loading" />
     <div class="form-wrap">
       <form class="reset">
@@ -15,7 +19,7 @@
             />
           </div>
         </div>
-        <button>Reset</button>
+        <button @click.prevent="resetPassword">Reset</button>
         <div class="angle"></div>
       </form>
       <div class="background"></div>
@@ -27,6 +31,9 @@
 import Modal from "@/components/Modal.vue";
 import Loading from "@/components/Loading.vue";
 import InlineSvg from "vue-inline-svg";
+import { auth } from "../firebase/firebaseInit";
+import { sendPasswordResetEmail } from "firebase/auth";
+
 export default {
   name: "Forgot Password",
   components: { InlineSvg, Modal, Loading },
@@ -39,6 +46,20 @@ export default {
     };
   },
   methods: {
+    resetPassword() {
+      this.loading = true;
+      sendPasswordResetEmail(auth, this.email)
+        .then(() => {
+          this.modalMessage = "If you have account in Blog. You can see a mail";
+          this.loading = false;
+          this.modalActive = true;
+        })
+        .catch((error) => {
+          this.modalMessage = error.message;
+          this.loading = false;
+          this.modalActive = true;
+        });
+    },
     closeModal() {
       this.modalActive = !this.modalActive;
       this.email = "";

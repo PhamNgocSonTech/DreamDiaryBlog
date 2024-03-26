@@ -22,12 +22,12 @@
             class="icon"
           />
         </div>
+        <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
-
       <router-link class="forgot-password" to="/forgot-password"
         >Forgot Password</router-link
       >
-      <button>Sign In</button>
+      <button @click.prevent="login">Login</button>
       <div class="angle"></div>
     </form>
     <div class="background"></div>
@@ -35,11 +35,50 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import InlineSvg from "vue-inline-svg";
-
+import { useRouter } from "vue-router";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/firebaseInit";
 export default {
   name: "Login",
   components: { InlineSvg },
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const error = ref(false);
+    const errorMsg = ref("");
+    const router = useRouter();
+
+    const login = async () => {
+      if (email.value !== "" && password.value !== "") {
+        error.value = false;
+        errorMsg.value = "";
+        try {
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email.value,
+            password.value
+          );
+          console.log("User Credential: ", userCredential.user.uid);
+          router.push("/");
+        } catch (err) {
+          error.value = true;
+          errorMsg.value = err;
+        }
+      } else {
+        error.value = true;
+        errorMsg.value = "Please fill out all the fields!";
+      }
+    };
+    return {
+      login,
+      email,
+      password,
+      error,
+      errorMsg,
+    };
+  },
 };
 </script>
 
