@@ -64,7 +64,7 @@ export default {
           router.push("/");
         } catch (err) {
           error.value = true;
-          errorMsg.value = err;
+          errorMsg.value = err.message;
         }
       } else {
         error.value = true;

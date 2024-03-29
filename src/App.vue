@@ -14,15 +14,15 @@ import { useRoute } from "vue-router";
 import Footer from "./components/Footer.vue";
 import Navigation from "./components/Navigation.vue";
 import { auth } from "@/firebase/firebaseInit";
-
+import { onAuthStateChanged } from "firebase/auth";
+import { useStore } from "vuex";
 export default {
   name: "App",
   components: { Navigation, Footer },
-
   setup() {
     const navigation = ref(null);
     const route = useRoute();
-
+    const store = useStore();
     const checkRoute = () => {
       if (
         route.name === "Login" ||
@@ -33,11 +33,16 @@ export default {
       } else {
         navigation.value = false;
       }
-      console.log("route name:", route.name);
     };
+
     onMounted(() => {
+      onAuthStateChanged(auth, (user) => {
+        store.commit("updateUser", user);
+        if (user) {
+          store.dispatch("getCurrentUser", user.uid);
+        }
+      });
       checkRoute();
-      console.log("current user:", auth.currentUser);
     });
     watchEffect(() => {
       checkRoute();

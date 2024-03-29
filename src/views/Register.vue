@@ -85,7 +85,7 @@
 import InlineSvg from "vue-inline-svg";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase/firebaseInit";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 export default {
@@ -117,15 +117,15 @@ export default {
             email.value,
             password.value
           );
-          console.log("User Credential: ", userCredential);
-
-          const userCollection = collection(db, "users");
-          await addDoc(userCollection, {
+          console.log("userCredential.user: " + userCredential);
+          const userDocRef = doc(db, "users", userCredential.user.uid);
+          const docRef = await setDoc(userDocRef, {
             firstName: firstName.value,
             lastName: lastName.value,
             username: username.value,
             email: email.value,
           });
+          console.log("docRef:", docRef.id);
           router.push("/");
         } catch (err) {
           error.value = true;
