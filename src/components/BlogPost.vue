@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper no-user">
+  <div class="blog-wrapper" :class="{ 'no-user': !userData }">
     <div class="blog-content">
       <div>
         <h2 v-if="post.welcomeScreen">{{ post.title }}</h2>
@@ -41,6 +41,11 @@ export default {
   methods: {
     getImgSrc(photo) {
       return require(`../assets/blogPhotos/${photo}.jpg`);
+    },
+  },
+  computed: {
+    userData() {
+      return this.$store.state.user;
     },
   },
 };

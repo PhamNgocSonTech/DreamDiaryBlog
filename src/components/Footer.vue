@@ -55,10 +55,10 @@
           <ul>
             <router-link class="link" to="/">Home</router-link>
             <router-link class="link" to="/blogs">Blogs</router-link>
-            <router-link v-if="admin" class="link" to="/createBlog"
+            <router-link v-if="userData" class="link" to="/createBlog"
               >Create Post</router-link
             >
-            <router-link v-if="!user" class="link" to="/login"
+            <router-link v-if="!userData" class="link" to="/login"
               >Login In / Register</router-link
             >
           </ul>
@@ -72,11 +72,23 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import InlineSvg from "vue-inline-svg";
+import { useStore } from "vuex";
 export default {
   name: "Footer",
   components: {
     InlineSvg,
+  },
+  setup() {
+    const store = useStore();
+    const userData = computed(() => {
+      return store.state.user;
+    });
+
+    return {
+      userData,
+    };
   },
 };
 </script>

@@ -62,11 +62,6 @@ const storeData = {
       state.profileFirstName = doc.data().firstName;
       state.profileLastName = doc.data().lastName;
       state.profileUsername = doc.data().username;
-      console.log("state id:", state.profileId);
-      console.log("state email:", state.profileEmail);
-      console.log("state first name:", state.profileFirstName);
-      console.log("state last name:", state.profileLastName);
-      console.log("state username:", state.profileUsername);
     },
 
     setProfileInitials(state) {
