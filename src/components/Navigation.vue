@@ -38,7 +38,7 @@
             </div>
             <div class="options">
               <div class="option">
-                <router-link class="option" to="#">
+                <router-link class="option" to="/profile">
                   <InlineSvg
                     :src="require('@/assets/Icons/user-alt-light.svg')"
                     class="icon"
@@ -48,7 +48,7 @@
               </div>
 
               <div class="option">
-                <router-link class="option" to="#">
+                <router-link class="option" to="/admin">
                   <InlineSvg
                     :src="require('@/assets/Icons/user-crown-light.svg')"
                     class="icon"

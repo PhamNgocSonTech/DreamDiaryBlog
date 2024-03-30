@@ -5,6 +5,8 @@ import Blogs from "@/views/Blogs.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import ForgotPass from "@/views/ForgotPassword.vue";
+import Profile from "@/views/Profile.vue";
+import Admin from "@/views/Admin.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { title: "Home" } },
@@ -25,6 +27,20 @@ const routes = [
     name: "ForgotPassword",
     component: ForgotPass,
     meta: { title: "Forgot Password" },
+  },
+
+  {
+    path: "/profile",
+    name: "Profile",
+    component: Profile,
+    meta: { title: "Profile" },
+  },
+
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
+    meta: { title: "Admin" },
   },
 ];
 

@@ -4,6 +4,7 @@ import {
   // collection,
   doc,
   getDoc,
+  updateDoc,
   // getDocs,
   // collection,
   // query,
@@ -69,19 +70,27 @@ const storeData = {
         state.profileFirstName.match(/(\b\S)?/g).join("") +
         state.profileLastName.match(/(\b\S)?/g).join("");
     },
+
+    changeFirstName(state, payload) {
+      state.profileFirstName = payload;
+    },
+
+    changeLastName(state, payload) {
+      state.profileLastName = payload;
+    },
+
+    changeUsername(state, payload) {
+      state.profileUsername = payload;
+    },
+
+    changeEmail(state, payload) {
+      state.profileEmail = payload;
+    },
   },
 
   actions: {
     async getCurrentUser({ commit }, user) {
       try {
-        // const q = query(collection(db, "users"));
-        // console.log("user", user);
-        // const querySnapshot = await getDocs(q);
-        // querySnapshot.forEach((doc) => {
-        //   console.log(doc, " => ", doc.data());
-        //   commit("setProfileInfo", doc.data());
-        //   // commit("setProfileInitials");
-        // });
         const userId = user;
         const docRef = doc(db, "users", userId);
         const docSnap = await getDoc(docRef);
@@ -92,6 +101,21 @@ const storeData = {
         } else {
           console.log("No such document!");
         }
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    },
+
+    async updateUserSettings({ commit, state }) {
+      try {
+        const userDoc = doc(db, "users", state.profileId);
+        console.log("userDoc:", userDoc);
+        await updateDoc(userDoc, {
+          firstName: state.profileFirstName,
+          lastName: state.profileLastName,
+          username: state.profileUsername,
+        });
+        commit("setProfileInitials");
       } catch (error) {
         console.log("Error:", error);
       }
