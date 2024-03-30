@@ -8,7 +8,9 @@
         <ul v-show="!mobile">
           <router-link class="link" to="/">Home</router-link>
           <router-link class="link" to="/blogs">Blogs</router-link>
-          <router-link class="link" to="#">Create Blog</router-link>
+          <router-link v-if="admin" class="link" to="#"
+            >Create Blog</router-link
+          >
           <router-link v-if="!userData" class="link" to="/login"
             >Login/Register</router-link
           >
@@ -47,7 +49,7 @@
                 </router-link>
               </div>
 
-              <div class="option">
+              <div v-show="admin" class="option">
                 <router-link class="option" to="/admin">
                   <InlineSvg
                     :src="require('@/assets/Icons/user-crown-light.svg')"
@@ -80,7 +82,7 @@
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" to="/">Home</router-link>
         <router-link class="link" to="/blogs">Blogs</router-link>
-        <router-link class="link" to="#">Create Blog</router-link>
+        <router-link v-if="admin" class="link" to="#">Create Blog</router-link>
         <router-link v-if="!userData" class="link" to="/login"
           >Login/Register</router-link
         >
@@ -90,7 +92,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import InlineSvg from "vue-inline-svg";
 import { useStore } from "vuex";
 import { signOut } from "firebase/auth";
@@ -128,6 +130,10 @@ export default {
       return store.state.user;
     });
 
+    const admin = computed(() => {
+      return store.state.profileAdmin;
+    });
+
     const checkScreen = () => {
       windowWidth.value = window.innerWidth;
       if (windowWidth.value <= 750) {
@@ -149,11 +155,20 @@ export default {
       }
     };
 
+    const handleClickOutside = (event) => {
+      if (refProfile.value && !refProfile.value.contains(event.target)) {
+        profileMenu.value = false;
+      }
+    };
+
     const signOutEvent = () => {
       signOut(auth);
       window.location.reload();
       console.log("Sign Out Successfully");
     };
+    onMounted(() => {
+      window.addEventListener("click", handleClickOutside);
+    });
 
     window.addEventListener("resize", checkScreen);
     checkScreen();
@@ -173,6 +188,8 @@ export default {
       toggleProfileMenu,
       signOutEvent,
       userData,
+      admin,
+      handleClickOutside,
     };
   },
   // data() {

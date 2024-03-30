@@ -117,15 +117,13 @@ export default {
             email.value,
             password.value
           );
-          console.log("userCredential.user: " + userCredential);
           const userDocRef = doc(db, "users", userCredential.user.uid);
-          const docRef = await setDoc(userDocRef, {
+          await setDoc(userDocRef, {
             firstName: firstName.value,
             lastName: lastName.value,
             username: username.value,
             email: email.value,
           });
-          console.log("docRef:", docRef.id);
           router.push("/");
         } catch (err) {
           error.value = true;

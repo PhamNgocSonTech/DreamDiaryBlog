@@ -55,7 +55,7 @@
           <ul>
             <router-link class="link" to="/">Home</router-link>
             <router-link class="link" to="/blogs">Blogs</router-link>
-            <router-link v-if="userData" class="link" to="/createBlog"
+            <router-link v-if="admin" class="link" to="/createBlog"
               >Create Post</router-link
             >
             <router-link v-if="!userData" class="link" to="/login"
@@ -85,9 +85,13 @@ export default {
     const userData = computed(() => {
       return store.state.user;
     });
+    const admin = computed(() => {
+      return store.state.profileAdmin;
+    });
 
     return {
       userData,
+      admin,
     };
   },
 };

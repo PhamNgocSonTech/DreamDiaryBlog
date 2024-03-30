@@ -36,10 +36,13 @@ export default {
     };
 
     onMounted(() => {
-      onAuthStateChanged(auth, (user) => {
+      onAuthStateChanged(auth, async (user) => {
         store.commit("updateUser", user);
         if (user) {
-          store.dispatch("getCurrentUser", user.uid);
+          const userId = user.uid;
+          const token = await user.getIdTokenResult();
+          const admin = token.claims.admin;
+          store.dispatch("getCurrentUser", { userId, admin });
         }
       });
       checkRoute();

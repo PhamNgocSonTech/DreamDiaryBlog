@@ -8,8 +8,8 @@
     <div class="container">
       <h2>Profile Settings</h2>
       <div class="profile-info">
-        <div class="initials">{{ $store.state.profileInitials }}</div>
-        <div class="admin-badge">
+        <div class="initials">{{ getProfileInitials }}</div>
+        <div v-if="admin" class="admin-badge">
           <!-- <adminIcon class="icon" /> -->
           <InlineSvg
             :src="require('@/assets/Icons/user-crown-light.svg')"
@@ -61,6 +61,10 @@ export default {
       modalActive.value = !modalActive.value;
     };
 
+    const getProfileInitials = computed(() => {
+      return store.state.profileInitials;
+    });
+
     const firstName = computed({
       get() {
         return store.state.profileFirstName;
@@ -97,6 +101,10 @@ export default {
       },
     });
 
+    const admin = computed(() => {
+      return store.state.profileAdmin;
+    });
+
     return {
       modalMessage,
       modalActive,
@@ -106,6 +114,8 @@ export default {
       username,
       email,
       updateProfile,
+      admin,
+      getProfileInitials,
     };
   },
 };

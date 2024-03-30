@@ -46,6 +46,7 @@ const storeData = {
     profileUsername: null,
     profileId: null,
     profileInitials: null,
+    profileAdmin: null,
   },
 
   mutations: {
@@ -86,18 +87,22 @@ const storeData = {
     changeEmail(state, payload) {
       state.profileEmail = payload;
     },
+
+    setProfileAdmin(state, payload) {
+      state.profileAdmin = payload;
+    },
   },
 
   actions: {
-    async getCurrentUser({ commit }, user) {
+    async getCurrentUser({ commit }, userData) {
       try {
-        const userId = user;
+        const { userId, admin } = userData;
         const docRef = doc(db, "users", userId);
         const docSnap = await getDoc(docRef);
-
         if (docSnap.exists()) {
           commit("setProfileInfo", docSnap);
           commit("setProfileInitials");
+          commit("setProfileAdmin", admin);
         } else {
           console.log("No such document!");
         }
@@ -109,7 +114,6 @@ const storeData = {
     async updateUserSettings({ commit, state }) {
       try {
         const userDoc = doc(db, "users", state.profileId);
-        console.log("userDoc:", userDoc);
         await updateDoc(userDoc, {
           firstName: state.profileFirstName,
           lastName: state.profileLastName,
