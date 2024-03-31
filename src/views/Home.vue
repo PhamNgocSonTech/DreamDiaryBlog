@@ -37,12 +37,24 @@
 import BlogPost from "@/components/BlogPost.vue";
 import BlogCard from "@/components/BlogCard.vue";
 import InlineSvg from "vue-inline-svg";
-
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "Home",
   components: { BlogPost, BlogCard, InlineSvg },
-  data() {
+  setup() {
+    const store = useStore();
+
+    const sampleBlogCards = computed(() => {
+      return store.state.sampleBlogCards;
+    });
+
+    const userData = computed(() => {
+      return store.state.user;
+    });
     return {
+      sampleBlogCards,
+      userData,
       welcomeScreen: {
         title: "Welcome to Dream Diary Blogs",
         blogPost:
@@ -66,14 +78,39 @@ export default {
       ],
     };
   },
-  computed: {
-    sampleBlogCards() {
-      return this.$store.state.sampleBlogCards;
-    },
-    userData() {
-      return this.$store.state.user;
-    },
-  },
+  // data() {
+  //   return {
+  //     welcomeScreen: {
+  //       title: "Welcome to Dream Diary Blogs",
+  //       blogPost:
+  //         "Weekly blog article with all things programming including HTML, CSS and JS.",
+  //       welcomeScreen: true,
+  //       photo: "coding",
+  //     },
+
+  //     sampleBlogPost: [
+  //       {
+  //         title: "This is a Filter Title 1",
+  //         blogHTML: "This is a filter blog post title",
+  //         blogCoverPhoto: "beautiful-stories",
+  //       },
+
+  //       {
+  //         title: "This is a Filter Title 2",
+  //         blogHTML: "This is a filter blog post title",
+  //         blogCoverPhoto: "designed-for-everyone",
+  //       },
+  //     ],
+  //   };
+  // },
+  // computed: {
+  //   sampleBlogCards() {
+  //     return this.$store.state.sampleBlogCards;
+  //   },
+  //   userData() {
+  //     return this.$store.state.user;
+  //   },
+  // },
 };
 </script>
 

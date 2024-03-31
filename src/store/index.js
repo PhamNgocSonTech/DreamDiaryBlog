@@ -14,27 +14,27 @@ const storeData = {
   state: {
     sampleBlogCards: [
       {
-        blogTitle: "Blog Card #1",
+        blogTitle: "Blog Card Example #1",
         blogCoverPhoto: "stock-1",
-        blogDate: "May 1, 2021",
+        blogDate: "March 1, 2024",
       },
 
       {
-        blogTitle: "Blog Card #2",
+        blogTitle: "Blog Card Example #2",
         blogCoverPhoto: "stock-2",
-        blogDate: "May 1, 2021",
+        blogDate: "March 1, 2024",
       },
 
       {
-        blogTitle: "Blog Card #3",
+        blogTitle: "Blog Card Example #3",
         blogCoverPhoto: "stock-3",
-        blogDate: "May 1, 2021",
+        blogDate: "March 1, 2024",
       },
 
       {
-        blogTitle: "Blog Card #4",
+        blogTitle: "Blog Card Example #4",
         blogCoverPhoto: "stock-4",
-        blogDate: "May 1, 2021",
+        blogDate: "March 1, 2024",
       },
     ],
     editPost: null,

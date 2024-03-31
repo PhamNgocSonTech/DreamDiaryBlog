@@ -34,20 +34,38 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "Blog Post",
   components: {},
   props: ["post"],
-  methods: {
-    getImgSrc(photo) {
+  setup() {
+    const store = useStore();
+    const userData = computed(() => {
+      return store.state.user;
+    });
+
+    const getImgSrc = (photo) => {
       return require(`../assets/blogPhotos/${photo}.jpg`);
-    },
+    };
+
+    return {
+      userData,
+      getImgSrc,
+      // post: props.post,
+    };
   },
-  computed: {
-    userData() {
-      return this.$store.state.user;
-    },
-  },
+  // methods: {
+  //   getImgSrc(photo) {
+  //     return require(`../assets/blogPhotos/${photo}.jpg`);
+  //   },
+  // },
+  // computed: {
+  //   userData() {
+  //     return this.$store.state.user;
+  //   },
+  // },
 };
 </script>
 

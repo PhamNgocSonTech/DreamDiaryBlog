@@ -34,22 +34,35 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import InlineSvg from "vue-inline-svg";
+import { useStore } from "vuex";
 export default {
   name: "Blog Card",
   props: ["post"],
-  setup() {},
   components: { InlineSvg },
-  computed: {
-    editPost() {
-      return this.$store.state.editPost;
-    },
-  },
-  methods: {
-    getImgSrc(photo) {
+  setup() {
+    const store = useStore();
+    const editPost = computed(() => {
+      return store.state.editPost;
+    });
+
+    const getImgSrc = (photo) => {
       return require(`../assets/blogCards/${photo}.jpg`);
-    },
+    };
+
+    return { editPost, getImgSrc };
   },
+  // computed: {
+  //   editPost() {
+  //     return this.$store.state.editPost;
+  //   },
+  // },
+  // methods: {
+  //   getImgSrc(photo) {
+  //     return require(`../assets/blogCards/${photo}.jpg`);
+  //   },
+  // },
 };
 </script>
 
