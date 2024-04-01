@@ -7,6 +7,7 @@ import Register from "@/views/Register.vue";
 import ForgotPass from "@/views/ForgotPassword.vue";
 import Profile from "@/views/Profile.vue";
 import Admin from "@/views/Admin.vue";
+import CreatePost from "@/views/CreatePost.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { title: "Home" } },
@@ -14,6 +15,13 @@ const routes = [
   { path: "/blogs", name: "Blogs", component: Blogs, meta: { title: "Blogs" } },
 
   { path: "/login", name: "Login", component: Login, meta: { title: "Login" } },
+
+  {
+    path: "/create-post",
+    name: "CreatePost",
+    component: CreatePost,
+    meta: { title: "Create Post" },
+  },
 
   {
     path: "/register",
@@ -39,6 +47,13 @@ const routes = [
   {
     path: "/admin",
     name: "Admin",
+    component: Admin,
+    meta: { title: "Admin" },
+  },
+
+  {
+    path: "/create-post",
+    name: "Create Post",
     component: Admin,
     meta: { title: "Admin" },
   },

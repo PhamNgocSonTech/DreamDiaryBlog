@@ -37,6 +37,12 @@ const storeData = {
         blogDate: "March 1, 2024",
       },
     ],
+
+    blogHTML: "Write your blog title in here...",
+    blogTitle: "",
+    blogPhotoName: "",
+    blogPhotoFileURL: null,
+    blogPhotoPreview: null,
     editPost: null,
     user: null,
     profile: null,
