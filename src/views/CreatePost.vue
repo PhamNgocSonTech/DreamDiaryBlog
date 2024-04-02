@@ -1,20 +1,27 @@
 <template>
   <div class="create-post">
+    <BlogCoverPreview v-show="getBlogPhotoPreview" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error:</span>{{ errorMessages }}</p>
       </div>
       <div class="blog-info">
-        <input type="text" placeholder="Enter Blog Title" v-model="blogTitle" />
+        <input
+          type="text"
+          placeholder="Enter Blog Title"
+          v-model="getBlogTitle"
+        />
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
           <input
             type="file"
+            @change="fileChange"
             ref="blogPhotoRef"
             id="blog-photo"
             accept=".png, .jpg, .jpeg"
           />
           <button
+            @click="openPreview"
             class="preview"
             :class="{ 'button-inactive': !getBlogFileUrl }"
           >
@@ -26,9 +33,10 @@
 
       <div class="editor">
         <QuillEditor
-          :editorOptions="editorSettings"
-          v-model="blogHTML"
-          useCustomImageHandler
+          toolbar="full"
+          :modules="imgResizeModule"
+          v-model:content="getBlogHTML"
+          contentType="html"
         />
       </div>
 
@@ -41,23 +49,20 @@
 </template>
 
 <script>
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-// window.QuillEditor = QuillEditor;
-// const ImgResize = require("quill-image-resize-module");
-
-// Quill.register("module/imageResize", ImgResize);
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import BlotFormatter from "quill-blot-formatter";
+import BlogCoverPreview from "@/components/BlogCoverPreview.vue";
 export default {
   name: "Create Post",
-  components: { QuillEditor },
+  components: { QuillEditor, BlogCoverPreview },
   setup() {
     const error = ref(null);
     const errorMsg = ref(null);
-    const blogTitle = ref("");
-    const blogHTML = ref("");
+    // const file = ref(null);
+    const blogPhotoRef = ref(null);
 
     const store = useStore();
 
@@ -69,15 +74,65 @@ export default {
       return store.state.blogPhotoName;
     });
 
-    const editorSettings = { module: { imageResize: {} } };
+    const getProfileId = computed(() => {
+      return store.state.profileId;
+    });
+
+    const getBlogTitle = computed({
+      get() {
+        return store.state.blogTitle;
+      },
+
+      set(payload) {
+        store.commit("updateBlogTitle", payload);
+      },
+    });
+
+    const getBlogHTML = computed({
+      get() {
+        return store.state.blogHTML;
+      },
+
+      set(payload) {
+        store.commit("newBlogPost", payload);
+      },
+    });
+
+    const getBlogPhotoPreview = computed(() => {
+      return store.state.blogPhotoPreview;
+    });
+
+    const imgResizeModule = {
+      name: "blotFormatter",
+      module: BlotFormatter,
+    };
+
+    const fileChange = () => {
+      const selectedFile = blogPhotoRef.value.files[0];
+      const fileName = selectedFile.name;
+      const fileURL = URL.createObjectURL(selectedFile);
+      store.commit("fileNameChange", fileName);
+      store.commit("createFileURL", fileURL);
+    };
+
+    const openPreview = () => {
+      store.commit("openPhotoPreview");
+    };
+
     return {
       error,
       errorMsg,
-      editorSettings,
+      imgResizeModule,
       getBlogFileUrl,
       getBlogPhotoName,
-      blogTitle,
-      blogHTML,
+      getProfileId,
+      getBlogTitle,
+      getBlogHTML,
+      fileChange,
+      blogPhotoRef,
+      BlogCoverPreview,
+      getBlogPhotoPreview,
+      openPreview,
     };
   },
 };

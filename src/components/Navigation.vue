@@ -49,7 +49,7 @@
                 </router-link>
               </div>
 
-              <div v-show="admin" class="option">
+              <div v-if="admin" v-show="admin" class="option">
                 <router-link class="option" to="/admin">
                   <InlineSvg
                     :src="require('@/assets/Icons/user-crown-light.svg')"
