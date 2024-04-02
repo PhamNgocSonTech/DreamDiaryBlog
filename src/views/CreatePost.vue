@@ -34,7 +34,7 @@
       <div class="editor">
         <QuillEditor
           toolbar="full"
-          :modules="imgResizeModule"
+          :modules="[imgResizeModule, imgUploaderModule]"
           v-model:content="getBlogHTML"
           contentType="html"
         />
@@ -49,23 +49,30 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref as vueRef } from "vue";
+import {
+  ref as storageRef,
+  getDownloadURL,
+  getStorage,
+  uploadBytes,
+} from "firebase/storage";
 import { useStore } from "vuex";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import BlotFormatter from "quill-blot-formatter";
+import ImageUploader from "quill-image-uploader";
 import BlogCoverPreview from "@/components/BlogCoverPreview.vue";
+
 export default {
   name: "Create Post",
   components: { QuillEditor, BlogCoverPreview },
   setup() {
-    const error = ref(null);
-    const errorMsg = ref(null);
-    // const file = ref(null);
-    const blogPhotoRef = ref(null);
+    const error = vueRef(null);
+    const errorMsg = vueRef(null);
+    // const file = vueRef(null);
+    const blogPhotoRef = vueRef(null);
 
     const store = useStore();
-
     const getBlogFileUrl = computed(() => {
       return store.state.blogPhotoFileURL;
     });
@@ -107,6 +114,54 @@ export default {
       module: BlotFormatter,
     };
 
+    const imgUploaderModule = {
+      name: "imageUploader",
+      module: ImageUploader,
+      options: {
+        upload: async (file) => {
+          try {
+            const storage = getStorage();
+            const docRef = storageRef(
+              storage,
+              `dream-diary-blog/blogPostPhotos/${file.name}`
+            );
+            const snapshot = await uploadBytes(docRef, file);
+            const url = await getDownloadURL(snapshot.ref);
+            return url;
+          } catch (error) {
+            console.error("Error:", error);
+            throw new Error("Upload failed");
+          }
+        },
+      },
+      //   upload: (file) => {
+      //     return new Promise((resolve, reject) => {
+      //       const docRef = storageRef(
+      //         storage,
+      //         `dream-diary-blog/blogPostPhotos/${file.name}`
+      //       );
+
+      //       uploadBytes(docRef, file)
+      //         .then((snapshot) => {
+      //           snapshot.ref
+      //             .getDownloadURL()
+      //             .then((url) => {
+      //               resolve(url);
+      //             })
+      //             .catch((err) => {
+      //               reject("Error getting download URL");
+      //               console.error("Error:", err);
+      //             });
+      //         })
+      //         .catch((err) => {
+      //           reject("Upload failed");
+      //           console.error("Error:", err);
+      //         });
+      //     });
+      //   },
+      // },
+    };
+
     const fileChange = () => {
       const selectedFile = blogPhotoRef.value.files[0];
       const fileName = selectedFile.name;
@@ -133,6 +188,8 @@ export default {
       BlogCoverPreview,
       getBlogPhotoPreview,
       openPreview,
+      // imageHandler,
+      imgUploaderModule,
     };
   },
 };
