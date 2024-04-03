@@ -1,9 +1,10 @@
 <template>
   <div class="create-post">
     <BlogCoverPreview v-show="getBlogPhotoPreview" />
+    <Loading v-show="loading" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
-        <p><span>Error:</span>{{ errorMessages }}</p>
+        <p><span>Error:</span>{{ errorMsg }}</p>
       </div>
       <div class="blog-info">
         <input
@@ -41,8 +42,10 @@
       </div>
 
       <div class="blog-actions">
-        <button>Publish Blog</button>
-        <router-link to="#" class="router-button">Post Preview</router-link>
+        <button @click="uploadBlog">Publish Blog</button>
+        <router-link to="/post-preview" class="router-button"
+          >Post Preview</router-link
+        >
       </div>
     </div>
   </div>
@@ -62,17 +65,25 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import BlotFormatter from "quill-blot-formatter";
 import ImageUploader from "quill-image-uploader";
 import BlogCoverPreview from "@/components/BlogCoverPreview.vue";
+import Loading from "@/components/Loading.vue";
+import { collection, addDoc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase/firebaseInit";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Create Post",
-  components: { QuillEditor, BlogCoverPreview },
+  components: { QuillEditor, BlogCoverPreview, Loading },
   setup() {
     const error = vueRef(null);
     const errorMsg = vueRef(null);
     // const file = vueRef(null);
     const blogPhotoRef = vueRef(null);
+    const loading = vueRef(null);
 
     const store = useStore();
+    const router = useRouter();
+    const storage = getStorage();
+
     const getBlogFileUrl = computed(() => {
       return store.state.blogPhotoFileURL;
     });
@@ -120,10 +131,9 @@ export default {
       options: {
         upload: async (file) => {
           try {
-            const storage = getStorage();
             const docRef = storageRef(
               storage,
-              `dream-diary-blog/blogPostPhotos/${file.name}`
+              `dream-diary-blog/BlogPostPhotos/${file.name}`
             );
             const snapshot = await uploadBytes(docRef, file);
             const url = await getDownloadURL(snapshot.ref);
@@ -174,6 +184,55 @@ export default {
       store.commit("openPhotoPreview");
     };
 
+    const uploadBlog = async (file) => {
+      if (getBlogTitle.value.length !== 0 && getBlogHTML.value.length !== 0) {
+        if (file) {
+          try {
+            loading.value = true;
+            // const storage = getStorage();
+            const docRef = storageRef(
+              storage,
+              `dream-diary-blog/BlogCoverPhotos/${getBlogPhotoName.value}`
+            );
+            const snapshot = await uploadBytes(docRef, file);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            const timestamp = await Date.now();
+            const blogPostsDocRef = collection(db, "blogPosts");
+            const newBlogPostRef = await addDoc(blogPostsDocRef, {
+              blogHTML: getBlogHTML.value,
+              blogCoverPhoto: downloadURL,
+              blogCoverPhotoName: getBlogPhotoName.value,
+              blogTitle: getBlogTitle.value,
+              profileId: getProfileId.value,
+              date: timestamp,
+            });
+
+            const blogID = newBlogPostRef.id;
+            await updateDoc(newBlogPostRef, { blogID: blogID });
+            // await store.dispatch("getPost");
+            loading.value = false;
+            router.push("/view-blog");
+          } catch (error) {
+            console.log(error);
+            loading.value = false;
+          }
+        } else {
+          error.value = true;
+          errorMsg.value = "Please ensure you uploaded a cover photo!";
+          setTimeout(() => {
+            error.value = false;
+          }, 5000);
+        }
+      } else {
+        error.value = true;
+        errorMsg.value =
+          "Please ensure Blog Title & Blog Post has been filled!";
+        setTimeout(() => {
+          error.value = false;
+        }, 5000);
+      }
+    };
+
     return {
       error,
       errorMsg,
@@ -190,6 +249,8 @@ export default {
       openPreview,
       // imageHandler,
       imgUploaderModule,
+      uploadBlog,
+      loading,
     };
   },
 };

@@ -8,6 +8,8 @@ import ForgotPass from "@/views/ForgotPassword.vue";
 import Profile from "@/views/Profile.vue";
 import Admin from "@/views/Admin.vue";
 import CreatePost from "@/views/CreatePost.vue";
+import BlogPreview from "@/views/BlogPreview.vue";
+import ViewBlog from "@/views/ViewBlog.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { title: "Home" } },
@@ -56,6 +58,20 @@ const routes = [
     name: "Create Post",
     component: Admin,
     meta: { title: "Admin" },
+  },
+
+  {
+    path: "/post-preview",
+    name: "Blog Preview",
+    component: BlogPreview,
+    meta: { title: "Blog Preview" },
+  },
+
+  {
+    path: "/view-blog",
+    name: "View Blog",
+    component: ViewBlog,
+    meta: { title: "View Blog" },
   },
 ];
 
