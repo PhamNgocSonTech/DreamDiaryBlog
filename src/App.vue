@@ -44,6 +44,7 @@ export default {
           const admin = token.claims.admin;
           store.dispatch("getCurrentUser", { userId, admin });
         }
+        store.dispatch("getPost");
       });
       checkRoute();
     });

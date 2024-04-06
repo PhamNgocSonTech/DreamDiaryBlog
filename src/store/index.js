@@ -1,43 +1,18 @@
 import Vuex from "vuex";
 import { db } from "@/firebase/firebaseInit";
 import {
-  // collection,
+  collection,
   doc,
   getDoc,
   updateDoc,
-  // getDocs,
-  // collection,
-  // query,
-  // where,
+  query,
+  orderBy,
+  getDocs,
 } from "firebase/firestore";
 const storeData = {
   state: {
-    sampleBlogCards: [
-      {
-        blogTitle: "Blog Card Example #1",
-        blogCoverPhoto: "stock-1",
-        blogDate: "March 1, 2024",
-      },
-
-      {
-        blogTitle: "Blog Card Example #2",
-        blogCoverPhoto: "stock-2",
-        blogDate: "March 1, 2024",
-      },
-
-      {
-        blogTitle: "Blog Card Example #3",
-        blogCoverPhoto: "stock-3",
-        blogDate: "March 1, 2024",
-      },
-
-      {
-        blogTitle: "Blog Card Example #4",
-        blogCoverPhoto: "stock-4",
-        blogDate: "March 1, 2024",
-      },
-    ],
-
+    blogPosts: [],
+    postLoaded: null,
     blogHTML: "Write your blog title in here...",
     blogTitle: "",
     blogPhotoName: "",
@@ -53,6 +28,16 @@ const storeData = {
     profileId: null,
     profileInitials: null,
     profileAdmin: null,
+  },
+
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);
+    },
+
+    blogPostsCards(state) {
+      return state.blogPosts.slice(2, 6);
+    },
   },
 
   mutations: {
@@ -150,7 +135,29 @@ const storeData = {
         console.log("Error:", error);
       }
     },
+    async getPost({ state }) {
+      const postResult = query(
+        collection(db, "blogPosts"),
+        orderBy("date", "desc")
+      );
+      const querySnapshot = await getDocs(postResult);
+      querySnapshot.forEach((doc) => {
+        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+          const data = {
+            blogID: doc.data().blogID,
+            blogTitle: doc.data().blogTitle,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogCoverPhotoName: doc.data().blogCoverPhotoName,
+            blogDate: doc.data().date,
+          };
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+    },
   },
+
   modules: {},
 };
 

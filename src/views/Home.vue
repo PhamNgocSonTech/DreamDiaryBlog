@@ -1,20 +1,12 @@
 <template>
   <div class="home">
     <BlogPost v-if="!userData" :post="welcomeScreen" />
-    <BlogPost
-      :post="post"
-      v-for="(post, index) in sampleBlogPost"
-      :key="index"
-    />
+    <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index" />
     <div class="blog-card-wrap">
       <div class="container">
         <h3>View More Recent Blog</h3>
         <div class="blog-cards">
-          <BlogCard
-            :post="post"
-            v-for="(post, index) in sampleBlogCards"
-            :key="index"
-          />
+          <BlogCard :post="post" v-for="(post, index) in blogPostsCards" :key="index" />
         </div>
       </div>
     </div>
@@ -23,10 +15,7 @@
         <h2>Never miss a post. Register free account to more post!</h2>
         <router-link to="#" class="router-button">
           Register for Dream Diary Blogs
-          <InlineSvg
-            :src="require('../assets/Icons/arrow-right-light.svg')"
-            class="arrow"
-          />
+          <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow" />
         </router-link>
       </div>
     </div>
@@ -45,15 +34,20 @@ export default {
   setup() {
     const store = useStore();
 
-    const sampleBlogCards = computed(() => {
-      return store.state.sampleBlogCards;
+    const blogPostsFeed = computed(() => {
+      return store.getters.blogPostsFeed;
+    });
+
+    const blogPostsCards = computed(() => {
+      return store.getters.blogPostsCards;
     });
 
     const userData = computed(() => {
       return store.state.user;
     });
     return {
-      sampleBlogCards,
+      blogPostsFeed,
+      blogPostsCards,
       userData,
       welcomeScreen: {
         title: "Welcome to Dream Diary Blogs",
@@ -62,20 +56,6 @@ export default {
         welcomeScreen: true,
         photo: "coding",
       },
-
-      sampleBlogPost: [
-        {
-          title: "This is a Filter Title 1",
-          blogHTML: "This is a filter blog post title",
-          blogCoverPhoto: "beautiful-stories",
-        },
-
-        {
-          title: "This is a Filter Title 2",
-          blogHTML: "This is a filter blog post title",
-          blogCoverPhoto: "designed-for-everyone",
-        },
-      ],
     };
   },
   // data() {
@@ -129,6 +109,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     @media (min-width: 800px) {
       padding: 125px 25px;
       flex-direction: row;
@@ -138,6 +119,7 @@ export default {
       display: flex;
       font-size: 14px;
       text-decoration: none;
+
       @media (min-width: 800px) {
         margin-left: auto;
       }
@@ -150,6 +132,7 @@ export default {
       width: 100%;
       text-align: center;
       text-transform: uppercase;
+
       @media (min-width: 800px) {
         text-align: initial;
         font-size: 40px;

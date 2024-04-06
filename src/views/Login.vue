@@ -55,12 +55,8 @@ export default {
         error.value = false;
         errorMsg.value = "";
         try {
-          const userCredential = await signInWithEmailAndPassword(
-            auth,
-            email.value,
-            password.value
-          );
-          console.log("User Credential: ", userCredential.user.uid);
+          await signInWithEmailAndPassword(auth, email.value, password.value);
+          // console.log("User Credential: ", userCredential.user.uid);
           router.push("/");
         } catch (err) {
           error.value = true;

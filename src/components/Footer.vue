@@ -6,61 +6,36 @@
           <router-link class="header" to="/">Dream Diary Blogs</router-link>
           <ul>
             <li>
-              <a href="#">
-                <!-- <img
-                  src="../assets/Icons/youtube-brands.svg"
-                  alt="YouTube"
-                  class="svg-icon"
-                /> -->
-                <InlineSvg
-                  :src="require('../assets/Icons/youtube-brands.svg')"
-                  alt="YouTube"
-                  class="svg-icon"
-                />
+              <a href="https://github.com/PhamNgocSonTech" target="_blank" rel="noopener noreferrer">
+                <InlineSvg :src="require('../assets/Icons/github-svgrepo-com.svg')" alt="github" class="svg-icon" />
               </a>
             </li>
             <li>
-              <!-- <a href="#"><TwitterIcon class="svg-icon" /></a> -->
-              <a href="#">
-                <InlineSvg
-                  :src="require('../assets/Icons/twitter-brands.svg')"
-                  alt="Twitter"
-                  class="svg-icon"
-                />
+              <a href="https://www.facebook.com/PhamNgocSonBB" target="_blank" rel="noopener noreferrer">
+                <InlineSvg :src="require('../assets/Icons/facebook-1-svgrepo-com.svg')" alt="facebook"
+                  class="svg-icon" />
               </a>
             </li>
+            <!-- <li>
+              <a href="#">
+                <InlineSvg :src="require('../assets/Icons/twitter-brands.svg')" alt="Twitter" class="svg-icon" />
+              </a>
+            </li> -->
             <li>
-              <!-- <a href="#"><InstagramsIcon class="svg-icon" /></a> -->
-              <a href="#">
-                <InlineSvg
-                  :src="require('../assets/Icons/instagram-brands.svg')"
-                  alt="instgram"
-                  class="svg-icon"
-                />
+              <a href="https://www.instagram.com/sonaquarius002/" target="_blank" rel="noopener noreferrer">
+                <InlineSvg :src="require('../assets/Icons/instagram-svgrepo-com.svg')" alt="instgram"
+                  class="svg-icon" />
               </a>
             </li>
-            <li>
-              <!-- <a href="#"><LinkedinIcon class="svg-icon" /></a> -->
-              <a href="#">
-                <InlineSvg
-                  :src="require('../assets/Icons/linkedin-brands.svg')"
-                  alt="linkedin"
-                  class="svg-icon"
-                />
-              </a>
-            </li>
+
           </ul>
         </div>
         <div class="col-2">
           <ul>
             <router-link class="link" to="/">Home</router-link>
             <router-link class="link" to="/blogs">Blogs</router-link>
-            <router-link v-if="admin" class="link" to="/createBlog"
-              >Create Post</router-link
-            >
-            <router-link v-if="!userData" class="link" to="/login"
-              >Login In / Register</router-link
-            >
+            <router-link v-if="admin" class="link" to="/create-post">Create Post</router-link>
+            <router-link v-if="!userData" class="link" to="/login">Login In / Register</router-link>
           </ul>
         </div>
       </div>
@@ -101,17 +76,19 @@ export default {
 footer {
   margin-top: auto;
   padding: 100px 25px;
-  background-color: #303030;
+  background-color: #8b8687;
+
   .container {
     display: flex;
     flex-direction: column;
     gap: 32px;
+
     @media (min-width: 800px) {
       flex-direction: row;
       gap: 0px;
     }
 
-    > div {
+    >div {
       display: flex;
       flex: 1;
     }
@@ -122,6 +99,7 @@ footer {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       @media (min-width: 800px) {
         flex-direction: row;
         align-items: initial;
@@ -135,10 +113,12 @@ footer {
         margin-bottom: 16px;
         text-decoration: none;
         font-weight: 600;
+
         @media (min-width: 800px) {
           text-align: initial;
         }
       }
+
       ul {
         gap: 16px;
         list-style: none;
@@ -150,6 +130,7 @@ footer {
         gap: 32px;
         display: flex;
         flex: 1;
+
         @media (min-width: 800px) {
           gap: 0;
         }
@@ -160,16 +141,19 @@ footer {
 
         h2 {
           text-align: center;
+
           @media (min-width: 800px) {
             text-align: initial;
           }
         }
+
         ul {
           margin-top: auto;
 
           li {
             display: flex;
             align-items: center;
+
             .svg-icon {
               width: 24px;
               height: auto;
@@ -185,9 +169,11 @@ footer {
           justify-content: center;
           flex-direction: row;
           flex-wrap: wrap;
+
           @media (min-width: 800px) {
             flex-direction: column;
           }
+
           .link {
             font-size: 16px;
             font-weight: 500;
@@ -203,6 +189,7 @@ footer {
       color: #fff;
       align-items: center;
       flex-direction: column;
+
       @media (min-width: 800px) {
         align-items: flex-end;
         gap: 0;

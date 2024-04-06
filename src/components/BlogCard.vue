@@ -2,32 +2,25 @@
   <div class="blog-card">
     <div v-show="editPost" class="icons">
       <div class="icon">
-        <!-- <img src="../assets/Icons/edit-regular.svg" class="icon" /> -->
-        <inline-svg
-          :src="require('../assets/Icons/edit-regular.svg')"
-          class="edit"
-        />
+        <InlineSvg :src="require('../assets/Icons/edit-regular.svg')" class="edit" />
       </div>
       <div class="icon">
-        <!-- <img src="../assets/Icons/trash-regular.svg" class="icon" /> -->
-        <inline-svg
-          :src="require('../assets/Icons/trash-regular.svg')"
-          class="delete"
-        />
+        <InlineSvg :src="require('../assets/Icons/trash-regular.svg')" class="delete" />
         <DeleteIcon />
       </div>
     </div>
-    <img :src="getImgSrc(post.blogCoverPhoto)" />
+    <img :src="post.blogCoverPhoto" alt="" />
     <div class="info">
       <h4>{{ post.blogTitle }}</h4>
-      <h6>Posted on: {{ post.blogDate }}</h6>
-      <router-link to="#" class="link">
+      <h6>
+        Posted on:
+        {{
+          new Date(post.blogDate).toDateString("en-us", { dateStyle: "long" })
+        }}
+      </h6>
+      <router-link :to="{ name: ViewBlog, params: { blogId: post.blogID } }" class="link">
         View The Post
-        <!-- <img src="../assets/Icons/arrow-right-light.svg" class="arrow" /> -->
-        <InlineSvg
-          :src="require('../assets/Icons/arrow-right-light.svg')"
-          class="arrow"
-        />
+        <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow" />
       </router-link>
     </div>
   </div>
@@ -47,22 +40,12 @@ export default {
       return store.state.editPost;
     });
 
-    const getImgSrc = (photo) => {
-      return require(`../assets/blogCards/${photo}.jpg`);
-    };
+    // const getImgSrc = (photo) => {
+    //   return require(`../assets/blogCards/${photo}.jpg`);
+    // };
 
-    return { editPost, getImgSrc };
+    return { editPost };
   },
-  // computed: {
-  //   editPost() {
-  //     return this.$store.state.editPost;
-  //   },
-  // },
-  // methods: {
-  //   getImgSrc(photo) {
-  //     return require(`../assets/blogCards/${photo}.jpg`);
-  //   },
-  // },
 };
 </script>
 
