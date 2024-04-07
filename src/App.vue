@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <div class="app">
+    <div class="app" v-if="postLoaded">
       <Navigation v-if="!navigation" />
       <router-view />
       <Footer v-if="!navigation" />
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { onMounted, ref, watchEffect } from "vue";
+import { onMounted, ref, watchEffect, computed } from "vue";
 import { useRoute } from "vue-router";
 import Footer from "./components/Footer.vue";
 import Navigation from "./components/Navigation.vue";
@@ -23,6 +23,7 @@ export default {
     const navigation = ref(null);
     const route = useRoute();
     const store = useStore();
+
     const checkRoute = () => {
       if (
         route.name === "Login" ||
@@ -34,6 +35,10 @@ export default {
         navigation.value = false;
       }
     };
+
+    const postLoaded = computed(() => {
+      return store.state.postLoaded
+    })
 
     onMounted(() => {
       onAuthStateChanged(auth, async (user) => {
@@ -48,11 +53,14 @@ export default {
       });
       checkRoute();
     });
+
     watchEffect(() => {
       checkRoute();
     });
+
     return {
       navigation,
+      postLoaded
     };
   },
 };
@@ -121,10 +129,12 @@ export default {
 .arrow {
   margin-left: 8px;
   width: 12px;
+
   path {
     fill: #000;
   }
 }
+
 .arrow-light {
   path {
     fill: #fff;
@@ -160,6 +170,7 @@ button,
   font-size: 15px;
   font-weight: 500;
   background-color: transparent;
+
   @media (min-width: 700px) {
     margin-top: 0;
     margin-left: auto;
@@ -192,6 +203,7 @@ button,
   position: relative;
   padding: 80px 16px;
   background-color: #f1f1f1;
+
   @media (min-width: 500px) {
     padding: 100px 16px;
   }
@@ -204,9 +216,11 @@ button,
     @media (min-width: 500px) {
       grid-template-columns: repeat(2, 1fr);
     }
+
     @media (min-width: 900px) {
       grid-template-columns: repeat(3, 1fr);
     }
+
     @media (min-width: 1200px) {
       grid-template-columns: repeat(4, 1fr);
     }

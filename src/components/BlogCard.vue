@@ -18,7 +18,7 @@
           new Date(post.blogDate).toDateString("en-us", { dateStyle: "long" })
         }}
       </h6>
-      <router-link :to="{ name: ViewBlog, params: { blogId: post.blogID } }" class="link">
+      <router-link :to="{ name: 'ViewBlog', params: { blogId: post.blogID } }" class="link">
         View The Post
         <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow" />
       </router-link>

@@ -2,7 +2,8 @@
     <div class="post-view" v-if="currentBlog">
         <div class="container quillWrapper">
             <h2>{{ currentBlog[0].blogTitle }}</h2>
-            <h4>Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }} </h4>
+            <h4>Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}
+            </h4>
             <img :src="currentBlog[0].blogCoverPhoto" alt="">
             <div class="post-content ql-editor" v-html="currentBlog[0].blogHTML"></div>
         </div>
@@ -10,8 +11,7 @@
 </template>
 
 <script>
-import { ref } from 'firebase/storage';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -21,13 +21,24 @@ export default {
         const currentBlog = ref(null);
         const store = useStore()
         const router = useRoute()
-        onMounted(async () => {
-            currentBlog.value = await store.state.blogPosts.filter((post) => {
+
+        // const getBlogPost = computed(() => {
+        //     return store.state.blogPosts
+        // })
+
+        const loadBlog = async () => {
+            const blogPost = await store.state.blogPosts.filter((post) => {
                 return post.blogID === router.params.blogId
             })
+            currentBlog.value = blogPost
+        }
+
+        onMounted(() => {
+            loadBlog()
         })
         return {
-            currentBlog
+            currentBlog,
+            loadBlog
         }
     }
 };

@@ -138,10 +138,7 @@ export default {
           );
           try {
             await uploadBytes(docRef, fileRef.value);
-            console.log("fil reft uploaded cover post: ", fileRef);
-
             const downloadURL = await getDownloadURL(docRef);
-            console.log("downloadURL : " + downloadURL);
             const timestamp = Date.now();
             const blogPostsDocRef = collection(db, "blogPosts");
             const newBlogPostRef = await addDoc(blogPostsDocRef, {
@@ -157,7 +154,8 @@ export default {
             await updateDoc(newBlogPostRef, { blogID: blogID });
             await store.dispatch("getPost");
             loading.value = false;
-            router.push("/view-blog");
+
+            router.push({ name: "ViewBlog", params: { blogId: blogID } });
           } catch (error) {
             console.log(error);
             loading.value = false;

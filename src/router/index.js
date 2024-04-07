@@ -54,22 +54,15 @@ const routes = [
   },
 
   {
-    path: "/create-post",
-    name: "Create Post",
-    component: Admin,
-    meta: { title: "Admin" },
-  },
-
-  {
     path: "/post-preview",
-    name: "Blog Preview",
+    name: "BlogPreview",
     component: BlogPreview,
     meta: { title: "Blog Preview" },
   },
 
   {
     path: "/view-blog/:blogId",
-    name: "View Blog",
+    name: "ViewBlog",
     component: ViewBlog,
     meta: { title: "View Blog" },
   },

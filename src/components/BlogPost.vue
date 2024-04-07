@@ -9,7 +9,7 @@
         <router-link v-if="post.welcomeScreen" to="/login" class="link link-light">Login/Register
           <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow arrow-light" />
         </router-link>
-        <router-link v-else :to="{ name: ViewBlog, params: { blogId: post.blogID } }" class="link">Read The Post
+        <router-link v-else :to="{ name: 'ViewBlog', params: { blogId: post.blogID } }" class="link">Read The Post
           <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow" />
         </router-link>
       </div>
