@@ -20,15 +20,12 @@ export default {
     setup() {
         const currentBlog = ref(null);
         const store = useStore()
-        const router = useRoute()
-
-        // const getBlogPost = computed(() => {
-        //     return store.state.blogPosts
-        // })
+        const route = useRoute()
+        // const router = useRouter()
 
         const loadBlog = async () => {
             const blogPost = await store.state.blogPosts.filter((post) => {
-                return post.blogID === router.params.blogId
+                return post.blogID === route.params.blogId
             })
             currentBlog.value = blogPost
         }

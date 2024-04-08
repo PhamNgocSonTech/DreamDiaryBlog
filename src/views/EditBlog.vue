@@ -24,15 +24,15 @@
       </div>
 
       <div class="blog-actions">
-        <button @click="uploadBlog">Publish Blog</button>
-        <router-link to="/post-preview" class="router-button">Post Preview</router-link>
+        <button @click="updateBlog">Save Changes</button>
+        <router-link to="/post-preview" class="router-button">Preview Changes</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref as vueRef } from "vue";
+import { onMounted, computed, ref as vueRef } from "vue";
 import {
   ref as storageRef,
   getDownloadURL,
@@ -46,9 +46,9 @@ import BlotFormatter from "quill-blot-formatter";
 import ImageUploader from "quill-image-uploader";
 import BlogCoverPreview from "@/components/BlogCoverPreview.vue";
 import Loading from "@/components/Loading.vue";
-import { collection, addDoc, updateDoc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../firebase/firebaseInit";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "Create Post",
@@ -61,8 +61,23 @@ export default {
     const loading = vueRef(null);
 
     const store = useStore();
+    const route = useRoute();
     const router = useRouter();
     const storage = getStorage();
+    const routeID = vueRef(null);
+    const currentBlog = vueRef(null);
+
+    const loadBlogEdit = async () => {
+      routeID.value = route.params.blogId;
+      console.log("routeID: " + route.params.blogId);
+      currentBlog.value = await store.state.blogPosts.filter((post) => {
+        return post.blogID === routeID.value
+      })
+      store.commit("setBlogState", currentBlog.value[0])
+    }
+    onMounted(async () => {
+      loadBlogEdit()
+    })
 
     const getBlogFileUrl = computed(() => {
       return store.state.blogPhotoFileURL;
@@ -128,7 +143,9 @@ export default {
       },
     };
 
-    const uploadBlog = async () => {
+    const updateBlog = async () => {
+      // const blogPostsDocRef = doc(db, "blogPosts", routeID.value)
+      // console.log("blog post doc ref", blogPostsDocRef);
       if (getBlogTitle.value.length !== 0 && getBlogHTML.value.length !== 0) {
         if (fileRef.value) {
           loading.value = true;
@@ -140,8 +157,9 @@ export default {
             await uploadBytes(docRef, fileRef.value);
             const downloadURL = await getDownloadURL(docRef);
             const timestamp = Date.now();
-            const blogPostsDocRef = collection(db, "blogPosts");
-            const newBlogPostRef = await addDoc(blogPostsDocRef, {
+            // const blogPostsDocRef = collection(db, "blogPosts");
+            console.log("blog post doc ref", doc(db, "blogPosts", routeID.value));
+            await updateDoc(doc(db, "blogPosts", routeID.value), {
               blogHTML: getBlogHTML.value,
               blogCoverPhoto: downloadURL,
               blogCoverPhotoName: getBlogPhotoName.value,
@@ -150,23 +168,20 @@ export default {
               date: timestamp,
             });
 
-            const blogID = newBlogPostRef.id;
-            await updateDoc(newBlogPostRef, { blogID: blogID });
-            await store.dispatch("getPost");
+            // const blogID = blogPostsDocRef.id;
+            // console.log("blogID", blogID);
+            // await updateDoc(newBlogPostRef, { blogID: blogID });
+            await store.dispatch("updatePost", routeID.value);
             loading.value = false;
-
-            router.push({ name: "ViewBlog", params: { blogId: blogID } });
+            // console.log("blog ID", newBlogPostRef.blogID);
+            router.push({ name: 'ViewBlog', params: { blogId: routeID.value } });
           } catch (error) {
             console.log(error);
             loading.value = false;
           }
-        } else {
-          error.value = true;
-          errorMsg.value = "Please ensure you uploaded a cover photo!";
-          setTimeout(() => {
-            error.value = false;
-          }, 5000);
         }
+
+
       } else {
         error.value = true;
         errorMsg.value =
@@ -189,6 +204,7 @@ export default {
     const openPreview = () => {
       store.commit("openPhotoPreview");
     };
+
     return {
       error,
       errorMsg,
@@ -205,7 +221,7 @@ export default {
       openPreview,
       // imageHandler,
       imgUploaderModule,
-      uploadBlog,
+      updateBlog,
       loading,
     };
   },

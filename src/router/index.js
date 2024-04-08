@@ -10,6 +10,8 @@ import Admin from "@/views/Admin.vue";
 import CreatePost from "@/views/CreatePost.vue";
 import BlogPreview from "@/views/BlogPreview.vue";
 import ViewBlog from "@/views/ViewBlog.vue";
+import EditBlog from "@/views/EditBlog.vue";
+import NotFound from "../components/error/NotFound.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home, meta: { title: "Home" } },
@@ -65,6 +67,18 @@ const routes = [
     name: "ViewBlog",
     component: ViewBlog,
     meta: { title: "View Blog" },
+  },
+
+  {
+    path: "/edit-blog/:blogId",
+    name: "EditBlog",
+    component: EditBlog,
+    meta: { title: "Edit Blog Post" },
+  },
+
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFound,
   },
 ];
 

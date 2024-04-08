@@ -1,12 +1,11 @@
 <template>
   <div class="blog-card">
     <div v-show="editPost" class="icons">
-      <div class="icon">
+      <div @click="editBlogPost" class="icon">
         <InlineSvg :src="require('../assets/Icons/edit-regular.svg')" class="edit" />
       </div>
-      <div class="icon">
+      <div @click="deleteBlogPost" class="icon">
         <InlineSvg :src="require('../assets/Icons/trash-regular.svg')" class="delete" />
-        <DeleteIcon />
       </div>
     </div>
     <img :src="post.blogCoverPhoto" alt="" />
@@ -27,24 +26,40 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import InlineSvg from "vue-inline-svg";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 export default {
   name: "Blog Card",
   props: ["post"],
   components: { InlineSvg },
-  setup() {
+  setup(props) {
     const store = useStore();
+    const post = ref(props.post);
+    const router = useRouter()
     const editPost = computed(() => {
       return store.state.editPost;
     });
+
+    // const postProps = computed(() => {
+    //   return props.post
+    // })
+
+    const deleteBlogPost = () => {
+      store.dispatch("deletePost", post.value.blogID)
+      console.log("blog value", post.value.blogID);
+    };
+
+    const editBlogPost = () => {
+      router.push({ name: 'EditBlog', params: { blogId: post.value.blogID } })
+    }
 
     // const getImgSrc = (photo) => {
     //   return require(`../assets/blogCards/${photo}.jpg`);
     // };
 
-    return { editPost };
+    return { editPost, deleteBlogPost, editBlogPost };
   },
 };
 </script>

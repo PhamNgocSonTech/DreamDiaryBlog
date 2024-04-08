@@ -8,6 +8,7 @@ import {
   query,
   orderBy,
   getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 const storeData = {
   state: {
@@ -102,6 +103,19 @@ const storeData = {
     setProfileAdmin(state, payload) {
       state.profileAdmin = payload;
     },
+
+    filterBlogPost(state, payload) {
+      state.blogPosts = state.blogPosts.filter(
+        (post) => post.blogID !== payload
+      );
+    },
+
+    setBlogState(state, payload) {
+      state.blogTitle = payload.blogTitle;
+      state.blogHTML = payload.blogHTML;
+      state.blogPhotoName = payload.blogCoverPhotoName;
+      state.blogPhotoFileURL = payload.blogCoverPhoto;
+    },
   },
 
   actions: {
@@ -135,6 +149,7 @@ const storeData = {
         console.log("Error:", error);
       }
     },
+
     async getPost({ state }) {
       const postResult = query(
         collection(db, "blogPosts"),
@@ -155,6 +170,16 @@ const storeData = {
         }
       });
       state.postLoaded = true;
+    },
+
+    async deletePost({ commit }, payload) {
+      await deleteDoc(doc(db, "blogPosts", payload));
+      commit("filterBlogPost", payload);
+    },
+
+    async updatePost({ commit, dispatch }, payload) {
+      commit("filterBlogPost", payload);
+      await dispatch("getPost");
     },
   },
 
