@@ -38,6 +38,7 @@ export default {
     const store = useStore();
     const post = ref(props.post);
     const router = useRouter()
+
     const editPost = computed(() => {
       return store.state.editPost;
     });

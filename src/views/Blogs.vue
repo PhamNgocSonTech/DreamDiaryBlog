@@ -1,7 +1,7 @@
 <template>
   <div class="blog-card-wrap">
     <div class="blog-cards container">
-      <div class="toggle-edit">
+      <div v-if="admin" class="toggle-edit">
         <span>Toggle Editting Post</span>
         <input type="checkbox" v-model="editPost" />
       </div>
@@ -32,11 +32,14 @@ export default {
     const blogPosts = computed(() => {
       return store.state.blogPosts;
     });
+    const admin = computed(() => {
+      return store.state.profileAdmin;
+    });
 
     onBeforeUnmount(() => {
       store.commit("toggleEditPost", false);
     });
-    return { editPost, blogPosts };
+    return { editPost, blogPosts, admin };
   },
   // computed: {
   //   sampleBlogCards() {

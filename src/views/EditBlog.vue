@@ -69,7 +69,6 @@ export default {
 
     const loadBlogEdit = async () => {
       routeID.value = route.params.blogId;
-      console.log("routeID: " + route.params.blogId);
       currentBlog.value = await store.state.blogPosts.filter((post) => {
         return post.blogID === routeID.value
       })
@@ -144,8 +143,6 @@ export default {
     };
 
     const updateBlog = async () => {
-      // const blogPostsDocRef = doc(db, "blogPosts", routeID.value)
-      // console.log("blog post doc ref", blogPostsDocRef);
       if (getBlogTitle.value.length !== 0 && getBlogHTML.value.length !== 0) {
         if (fileRef.value) {
           loading.value = true;
@@ -157,8 +154,6 @@ export default {
             await uploadBytes(docRef, fileRef.value);
             const downloadURL = await getDownloadURL(docRef);
             const timestamp = Date.now();
-            // const blogPostsDocRef = collection(db, "blogPosts");
-            console.log("blog post doc ref", doc(db, "blogPosts", routeID.value));
             await updateDoc(doc(db, "blogPosts", routeID.value), {
               blogHTML: getBlogHTML.value,
               blogCoverPhoto: downloadURL,

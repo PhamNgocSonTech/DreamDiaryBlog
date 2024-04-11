@@ -8,19 +8,10 @@
         <ul v-show="!mobile">
           <router-link class="link" to="/">Home</router-link>
           <router-link class="link" to="/blogs">Blogs</router-link>
-          <router-link v-if="admin" class="link" to="/create-post"
-            >Create Blog</router-link
-          >
-          <router-link v-if="!userData" class="link" to="/login"
-            >Login/Register</router-link
-          >
+          <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
+          <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
         </ul>
-        <div
-          v-if="userData"
-          @click="toggleProfileMenu"
-          class="profile"
-          ref="refProfile"
-        >
+        <div v-if="userData" @click="toggleProfileMenu" class="profile" ref="refProfile">
           <span>{{ profileInitials }}</span>
           <div v-show="profileMenu" class="profile-menu">
             <div class="info">
@@ -41,29 +32,20 @@
             <div class="options">
               <div class="option">
                 <router-link class="option" to="/profile">
-                  <InlineSvg
-                    :src="require('@/assets/Icons/user-alt-light.svg')"
-                    class="icon"
-                  />
+                  <InlineSvg :src="require('@/assets/Icons/user-alt-light.svg')" class="icon" />
                   <p>Profile</p>
                 </router-link>
               </div>
 
               <div v-if="admin" v-show="admin" class="option">
                 <router-link class="option" to="/admin">
-                  <InlineSvg
-                    :src="require('@/assets/Icons/user-crown-light.svg')"
-                    class="icon"
-                  />
+                  <InlineSvg :src="require('@/assets/Icons/user-crown-light.svg')" class="icon" />
                   <p>Admin</p>
                 </router-link>
               </div>
 
               <div @click="signOutEvent" class="option">
-                <InlineSvg
-                  :src="require('@/assets/Icons/sign-out-alt-regular.svg')"
-                  class="icon"
-                />
+                <InlineSvg :src="require('@/assets/Icons/sign-out-alt-regular.svg')" class="icon" />
                 <p>Sign Out</p>
               </div>
             </div>
@@ -71,23 +53,14 @@
         </div>
       </div>
     </nav>
-    <InlineSvg
-      :src="require('../assets/Icons/bars-regular.svg')"
-      alt="menu"
-      class="menu-icon"
-      v-show="mobile"
-      @click="toggleMobileNav"
-    />
+    <InlineSvg :src="require('../assets/Icons/bars-regular.svg')" alt="menu" class="menu-icon" v-show="mobile"
+      @click="toggleMobileNav" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" to="/">Home</router-link>
         <router-link class="link" to="/blogs">Blogs</router-link>
-        <router-link v-if="admin" class="link" to="/create-post"
-          >Create Blog</router-link
-        >
-        <router-link v-if="!userData" class="link" to="/login"
-          >Login/Register</router-link
-        >
+        <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
+        <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
       </ul>
     </transition>
   </header>
@@ -99,6 +72,7 @@ import InlineSvg from "vue-inline-svg";
 import { useStore } from "vuex";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/firebaseInit";
+import { useRouter } from "vue-router";
 export default {
   name: "Navigation",
   components: {
@@ -106,6 +80,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter()
     const mobile = ref(null);
     const mobileNav = ref(null);
     const windowWidth = ref(null);
@@ -165,7 +140,8 @@ export default {
 
     const signOutEvent = () => {
       signOut(auth);
-      window.location.reload();
+      // window.location.reload();
+      router.push({ name: 'Home' })
       console.log("Sign Out Successfully");
     };
     onMounted(() => {
@@ -338,6 +314,7 @@ header {
 
           .options {
             padding: 15px;
+
             .option {
               text-decoration: none;
               color: #fff;
@@ -349,6 +326,7 @@ header {
                 width: 18px;
                 height: auto;
               }
+
               p {
                 font-size: 14px;
                 margin-left: 12px;
