@@ -2,64 +2,202 @@
   <header>
     <nav class="container">
       <div class="branding">
-        <router-link class="header" to="/">SBlog</router-link>
+        <router-link class="header" to="/">Dream Diary Blogs</router-link>
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">
-          <router-link class="link" to="#">Home</router-link>
-          <router-link class="link" to="#">Blogs</router-link>
-          <router-link class="link" to="#">Create Blog</router-link>
-          <router-link class="link" to="#">Login/Register</router-link>
+          <router-link class="link" to="/">Home</router-link>
+          <router-link class="link" to="/blogs">Blogs</router-link>
+          <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
+          <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
         </ul>
+        <div v-if="userData" @click="toggleProfileMenu" class="profile" ref="refProfile">
+          <span>{{ profileInitials }}</span>
+          <div v-show="profileMenu" class="profile-menu">
+            <div class="info">
+              <p class="initials">{{ profileInitials }}</p>
+              <div class="right">
+                <p>
+                  {{ profileFirstName }}
+                  {{ profileLastname }}
+                </p>
+                <p>
+                  {{ profileUsername }}
+                </p>
+                <p>
+                  {{ profileEmail }}
+                </p>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link class="option" to="/profile">
+                  <InlineSvg :src="require('@/assets/Icons/user-alt-light.svg')" class="icon" />
+                  <p>Profile</p>
+                </router-link>
+              </div>
+
+              <div v-if="admin" v-show="admin" class="option">
+                <router-link class="option" to="/admin">
+                  <InlineSvg :src="require('@/assets/Icons/user-crown-light.svg')" class="icon" />
+                  <p>Admin</p>
+                </router-link>
+              </div>
+
+              <div @click="signOutEvent" class="option">
+                <InlineSvg :src="require('@/assets/Icons/sign-out-alt-regular.svg')" class="icon" />
+                <p>Sign Out</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
-    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
+    <InlineSvg :src="require('../assets/Icons/bars-regular.svg')" alt="menu" class="menu-icon" v-show="mobile"
+      @click="toggleMobileNav" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
-        <router-link class="link" to="#">Home</router-link>
-        <router-link class="link" to="#">Blogs</router-link>
-        <router-link class="link" to="#">Create Blog</router-link>
-        <router-link class="link" to="#">Login/Register</router-link>
+        <router-link class="link" to="/">Home</router-link>
+        <router-link class="link" to="/blogs">Blogs</router-link>
+        <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
+        <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
       </ul>
     </transition>
   </header>
 </template>
 
 <script>
-import { menuIcon } from "../assets/Icons/bars-regular.svg";
+import { computed, onMounted, ref } from "vue";
+import InlineSvg from "vue-inline-svg";
+import { useStore } from "vuex";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebase/firebaseInit";
+import { useRouter } from "vue-router";
 export default {
   name: "Navigation",
   components: {
-    menuIcon,
+    InlineSvg,
   },
-  data() {
-    return {
-      mobile: null,
-      mobileNav: null,
-      windowWidth: null,
-    };
-  },
-  created() {
-    window.addEventListener("resize", this.checkScreen);
-    this.checkScreen();
-  },
+  setup() {
+    const store = useStore();
+    const router = useRouter()
+    const mobile = ref(null);
+    const mobileNav = ref(null);
+    const windowWidth = ref(null);
+    const refProfile = ref(null);
+    const profileMenu = ref(null);
 
-  methods: {
-    checkScreen() {
-      this.windowWidth = window.innerWidth;
-      if (this.windowWidth <= 992) {
-        this.mobile = true;
+    const profileInitials = computed(() => {
+      return store.state.profileInitials;
+    });
+    const profileFirstName = computed(() => {
+      return store.state.profileFirstName;
+    });
+    const profileLastname = computed(() => {
+      return store.state.profileLastname;
+    });
+    const profileUsername = computed(() => {
+      return store.state.profileUsername;
+    });
+    const profileEmail = computed(() => {
+      return store.state.profileEmail;
+    });
+
+    const userData = computed(() => {
+      return store.state.user;
+    });
+
+    const admin = computed(() => {
+      return store.state.profileAdmin;
+    });
+
+    const checkScreen = () => {
+      windowWidth.value = window.innerWidth;
+      if (windowWidth.value <= 750) {
+        mobile.value = true;
         return;
       } else {
-        this.mobile = false;
-        this.mobileNav = false;
+        mobile.value = false;
+        mobileNav.value = false;
       }
-    },
+    };
 
-    toggleMobileNav() {
-      this.mobileNav = !this.mobileNav;
-    },
+    const toggleMobileNav = () => {
+      mobileNav.value = !mobileNav.value;
+    };
+
+    const toggleProfileMenu = (event) => {
+      if (event.target === refProfile.value) {
+        profileMenu.value = !profileMenu.value;
+      }
+    };
+
+    const handleClickOutside = (event) => {
+      if (refProfile.value && !refProfile.value.contains(event.target)) {
+        profileMenu.value = false;
+      }
+    };
+
+    const signOutEvent = () => {
+      signOut(auth);
+      // window.location.reload();
+      router.push({ name: 'Home' })
+      console.log("Sign Out Successfully");
+    };
+    onMounted(() => {
+      window.addEventListener("click", handleClickOutside);
+    });
+
+    window.addEventListener("resize", checkScreen);
+    checkScreen();
+    return {
+      mobile,
+      mobileNav,
+      windowWidth,
+      checkScreen,
+      toggleMobileNav,
+      profileInitials,
+      profileFirstName,
+      profileLastname,
+      profileUsername,
+      profileEmail,
+      refProfile,
+      profileMenu,
+      toggleProfileMenu,
+      signOutEvent,
+      userData,
+      admin,
+      handleClickOutside,
+    };
   },
+  // data() {
+  //   return {
+  //     mobile: null,
+  //     mobileNav: null,
+  //     windowWidth: null,
+  //   };
+  // },
+  // created() {
+  //   window.addEventListener("resize", this.checkScreen);
+  //   this.checkScreen();
+  // },
+
+  // methods: {
+  //   checkScreen() {
+  //     this.windowWidth = window.innerWidth;
+  //     if (this.windowWidth <= 750) {
+  //       this.mobile = true;
+  //       return;
+  //     } else {
+  //       this.mobile = false;
+  //       this.mobileNav = false;
+  //     }
+  //   },
+
+  //   toggleMobileNav() {
+  //     this.mobileNav = !this.mobileNav;
+  //   },
+  // },
 };
 </script>
 
@@ -176,6 +314,7 @@ header {
 
           .options {
             padding: 15px;
+
             .option {
               text-decoration: none;
               color: #fff;
@@ -187,6 +326,7 @@ header {
                 width: 18px;
                 height: auto;
               }
+
               p {
                 font-size: 14px;
                 margin-left: 12px;
