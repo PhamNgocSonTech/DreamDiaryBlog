@@ -12,8 +12,6 @@ import BlogPreview from "@/views/BlogPreview.vue";
 import ViewBlog from "@/views/ViewBlog.vue";
 import EditBlog from "@/views/EditBlog.vue";
 import NotFound from "../components/error/NotFound.vue";
-// import { authGuard, adminGuard } from "./guards";
-
 import { auth } from "@/firebase/firebaseInit";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -104,9 +102,20 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes: routes,
-  scrollBehavior() {
-    return { x: 0, y: 0 };
+  scrollBehavior: function (to, _from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return { el: to.hash, behavior: "smooth" };
+    } else {
+      console.log("moving to top of the page");
+      window.scrollTo(0, 0);
+    }
   },
+  // scrollBehavior() {
+  //   window.scrollTo(0, 0);
+  // },
 });
 
 onAuthStateChanged(auth, async (user) => {

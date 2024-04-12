@@ -13,7 +13,7 @@
     <div v-if="!userData" class="updates">
       <div class="container">
         <h2>Never miss a post. Register free account to more post!</h2>
-        <router-link to="#" class="router-button">
+        <router-link to="/login" class="router-button">
           Register for Dream Diary Blogs
           <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow" />
         </router-link>

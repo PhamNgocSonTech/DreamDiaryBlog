@@ -94,7 +94,8 @@ export default {
 
       h2 {
         font-size: 32px;
-        font-weight: 300;
+        // font-weight: 300;
+        font-weight: bold;
         text-transform: uppercase;
         margin-bottom: 24px;
 
