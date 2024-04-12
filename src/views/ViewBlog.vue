@@ -48,5 +48,10 @@ export default {
         font-size: 14px;
         margin-bottom: 24px;
     }
+
+    h2 {
+        font-weight: bold;
+        font-size: 48px;
+    }
 }
 </style>

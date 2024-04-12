@@ -4,7 +4,7 @@
     <Loading v-show="loading" />
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
-        <p><span>Error:</span>{{ errorMsg }}</p>
+        <p><span>Error: </span>{{ errorMsg }}</p>
       </div>
       <div class="blog-info">
         <input type="text" placeholder="Enter Blog Title" v-model="getBlogTitle" />
@@ -116,12 +116,11 @@ export default {
               `dream-diary-blog/BlogPostPhotos/${file.name}`
             );
             const snapshot = await uploadBytes(docRef, file);
-            console.log("file uploaded post: ", file);
             const url = await getDownloadURL(snapshot.ref);
             console.log("url: " + url);
             return url;
           } catch (error) {
-            console.error("Error:", error);
+            console.error("Error: ", error);
             throw new Error("Upload failed");
           }
         },

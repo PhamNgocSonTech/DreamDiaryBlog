@@ -2,9 +2,11 @@
   <div class="blog-card">
     <div v-show="editPost" class="icons">
       <div @click="editBlogPost" class="icon">
+        <span>Edit</span>
         <InlineSvg :src="require('../assets/Icons/edit-regular.svg')" class="edit" />
       </div>
       <div @click="deleteBlogPost" class="icon">
+        <span>Delete</span>
         <InlineSvg :src="require('../assets/Icons/trash-regular.svg')" class="delete" />
       </div>
     </div>
@@ -82,6 +84,48 @@ export default {
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
+  // .icons {
+  //   display: flex;
+  //   position: absolute;
+  //   top: 10px;
+  //   right: 10px;
+  //   z-index: 99;
+
+  //   .icon {
+  //     display: flex;
+  //     justify-content: center;
+  //     align-items: center;
+  //     width: 35px;
+  //     height: 35px;
+  //     border-radius: 50%;
+  //     background-color: #fff;
+  //     transition: 0.5s ease all;
+  //     position: relative;
+
+  //     &:hover {
+  //       background-color: #AAABD3;
+
+  //       .edit,
+  //       .delete {
+  //         path {
+  //           fill: #fff;
+  //         }
+  //       }
+  //     }
+
+  //     &:nth-child(1) {
+  //       margin-right: 8px;
+  //     }
+
+  //     .edit,
+  //     .delete {
+  //       pointer-events: none;
+  //       height: 15px;
+  //       width: auto;
+  //     }
+  //   }
+  // }
+
   .icons {
     display: flex;
     position: absolute;
@@ -98,9 +142,10 @@ export default {
       border-radius: 50%;
       background-color: #fff;
       transition: 0.5s ease all;
+      position: relative;
 
       &:hover {
-        background-color: #303030;
+        background-color: #008c9e;
 
         .edit,
         .delete {
@@ -119,6 +164,38 @@ export default {
         pointer-events: none;
         height: 15px;
         width: auto;
+      }
+
+      &:hover span {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      span {
+        visibility: hidden;
+        background-color: #E0E3DA;
+        color: #fa6060;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        transition: opacity 0.3s;
+
+        &::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: black transparent transparent transparent;
+        }
       }
     }
   }
@@ -143,7 +220,7 @@ export default {
     h4 {
       padding-bottom: 8px;
       font-size: 20px;
-      font-weight: 300;
+      font-weight: bold;
     }
 
     h6 {

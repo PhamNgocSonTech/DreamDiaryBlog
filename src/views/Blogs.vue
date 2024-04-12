@@ -2,7 +2,7 @@
   <div class="blog-card-wrap">
     <div class="blog-cards container">
       <div v-if="admin" class="toggle-edit">
-        <span>Toggle Editting Post</span>
+        <span>Toggle Edit Post</span>
         <input type="checkbox" v-model="editPost" />
       </div>
       <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index" />
@@ -77,7 +77,7 @@ export default {
       position: relative;
       border: none;
       -webkit-appearance: none;
-      background: #fff;
+      background: #e3dede;
       outline: none;
       width: 80px;
       height: 30px;
@@ -94,7 +94,7 @@ export default {
       border-radius: 20px;
       top: 0;
       left: 0;
-      background: #303030;
+      background: #8CD790;
       transform: scale(1.1);
       transition: 750ms ease all;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -102,7 +102,7 @@ export default {
     }
 
     input:checked[type="checkbox"]:before {
-      background: #fff;
+      background: #fa6060;
       left: 52px;
     }
   }
