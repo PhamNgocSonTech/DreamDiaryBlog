@@ -53,9 +53,9 @@ export default {
 
 <style lang="scss">
 .post-view {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: space-between;
 
     h4 {
         font-weight: 400;
