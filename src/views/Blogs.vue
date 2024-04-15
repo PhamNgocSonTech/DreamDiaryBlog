@@ -77,7 +77,7 @@ export default {
       position: relative;
       border: none;
       -webkit-appearance: none;
-      background: #e3dede;
+      background: #dddfe6;
       outline: none;
       width: 80px;
       height: 30px;
@@ -94,7 +94,7 @@ export default {
       border-radius: 20px;
       top: 0;
       left: 0;
-      background: #8CD790;
+      background: #dddfe6;
       transform: scale(1.1);
       transition: 750ms ease all;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),

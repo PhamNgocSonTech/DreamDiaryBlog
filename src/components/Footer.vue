@@ -76,7 +76,7 @@ export default {
 footer {
   margin-top: auto;
   padding: 100px 25px;
-  background-color: #8b8687;
+  background-color: #dddfe6;
 
   .container {
     display: flex;
@@ -109,7 +109,7 @@ footer {
       .header {
         text-align: center;
         font-size: 24px;
-        color: #fff;
+        color: #000;
         margin-bottom: 16px;
         text-decoration: none;
         font-weight: 600;
@@ -177,16 +177,21 @@ footer {
           .link {
             font-size: 16px;
             font-weight: 500;
-            color: #fff;
+            color: #000;
             text-decoration: none;
+
+            &:hover {
+              color: #03a6ff;
+            }
           }
+
         }
       }
     }
 
     .right {
       gap: 32px;
-      color: #fff;
+      color: #000;
       align-items: center;
       flex-direction: column;
 

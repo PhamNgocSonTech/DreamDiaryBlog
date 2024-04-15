@@ -109,7 +109,6 @@ const router = createRouter({
     if (to.hash) {
       return { el: to.hash, behavior: "smooth" };
     } else {
-      console.log("moving to top of the page");
       window.scrollTo(0, 0);
     }
   },
