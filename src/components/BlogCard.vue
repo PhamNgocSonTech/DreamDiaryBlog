@@ -19,6 +19,8 @@
           new Date(post.blogDate).toDateString("en-us", { dateStyle: "long" })
         }}
       </h6>
+      <span class="author-name">Author: {{ username }}</span> <!-- Thêm thẻ tác giả -->
+
       <router-link :to="{ name: 'ViewBlog', params: { blogId: post.blogID } }" class="link">
         View The Post
         <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow" />
@@ -51,18 +53,20 @@ export default {
 
     const deleteBlogPost = () => {
       store.dispatch("deletePost", post.value.blogID)
-      console.log("blog value", post.value.blogID);
     };
 
     const editBlogPost = () => {
       router.push({ name: 'EditBlog', params: { blogId: post.value.blogID } })
     }
 
+    const username = computed(() => {
+      return store.state.profileUsername;
+    })
     // const getImgSrc = (photo) => {
     //   return require(`../assets/blogCards/${photo}.jpg`);
     // };
 
-    return { editPost, deleteBlogPost, editBlogPost };
+    return { editPost, deleteBlogPost, editBlogPost, username };
   },
 };
 </script>
@@ -84,48 +88,6 @@ export default {
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
-  // .icons {
-  //   display: flex;
-  //   position: absolute;
-  //   top: 10px;
-  //   right: 10px;
-  //   z-index: 99;
-
-  //   .icon {
-  //     display: flex;
-  //     justify-content: center;
-  //     align-items: center;
-  //     width: 35px;
-  //     height: 35px;
-  //     border-radius: 50%;
-  //     background-color: #fff;
-  //     transition: 0.5s ease all;
-  //     position: relative;
-
-  //     &:hover {
-  //       background-color: #AAABD3;
-
-  //       .edit,
-  //       .delete {
-  //         path {
-  //           fill: #fff;
-  //         }
-  //       }
-  //     }
-
-  //     &:nth-child(1) {
-  //       margin-right: 8px;
-  //     }
-
-  //     .edit,
-  //     .delete {
-  //       pointer-events: none;
-  //       height: 15px;
-  //       width: auto;
-  //     }
-  //   }
-  // }
-
   .icons {
     display: flex;
     position: absolute;
@@ -145,7 +107,7 @@ export default {
       position: relative;
 
       &:hover {
-        background-color: #008c9e;
+        background-color: #03a6ff;
 
         .edit,
         .delete {
@@ -174,13 +136,14 @@ export default {
       span {
         visibility: hidden;
         background-color: #E0E3DA;
+        font-weight: bold;
         color: #fa6060;
         text-align: center;
         border-radius: 6px;
         padding: 5px;
         position: absolute;
         z-index: 1;
-        bottom: 125%;
+        bottom: 150%;
         left: 50%;
         transform: translateX(-50%);
         opacity: 0;
@@ -226,7 +189,7 @@ export default {
     h6 {
       font-weight: 400;
       font-size: 12px;
-      padding-bottom: 16px;
+      padding-bottom: 6px;
     }
 
     .link {
@@ -246,6 +209,13 @@ export default {
       .arrow {
         width: 10px;
       }
+    }
+
+    .author-name {
+      font-weight: 400;
+      font-size: 12px;
+      font-style: italic;
+      padding-top: 4px; // Để tạo khoảng cách giữa "Posted on" và tên tác giả
     }
   }
 }
