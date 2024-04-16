@@ -6,7 +6,7 @@
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error: </span>{{ errorMsg }}</p>
       </div>
-      <div class="blog-info">
+      <div class="blog-info" v-show="!showPostPreview">
         <input type="text" placeholder="Enter Blog Title" v-model="getBlogTitle" />
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
@@ -18,14 +18,27 @@
         </div>
       </div>
 
-      <div class="editor">
+      <div class="editor" v-show="!showPostPreview">
         <QuillEditor toolbar="full" :modules="[imgResizeModule, imgUploaderModule]" v-model:content="getBlogHTML"
           contentType="html" />
       </div>
 
       <div class="blog-actions">
         <button @click="uploadBlog">Publish Blog</button>
-        <router-link to="/post-preview" class="router-button">Post Preview</router-link>
+        <!-- <router-link to="/post-preview" class="router-button">Post Preview</router-link> -->
+        <button @click="showPreview" v-show="!showPostPreview">Post Preview</button>
+        <button @click="showPreview" v-show="showPostPreview">Edit Post</button>
+
+        <div v-if="showPostPreview" class="showPostPreview">
+          <div class="post-view">
+            <div class="container quillWrapper">
+              <h2>{{ getBlogTitle }}</h2>
+              <img :src="getBlogFileUrl" alt="" />
+              <div class="post-content ql-editor" v-html="getBlogHTML"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -59,10 +72,12 @@ export default {
     const fileRef = vueRef(null);
     const blogPhotoRef = vueRef(null);
     const loading = vueRef(null);
+    const showPostPreview = vueRef(false);
 
     const store = useStore();
     const router = useRouter();
     const storage = getStorage();
+    const inputFile = computed(() => store.state.inputFile)
 
     const getBlogFileUrl = computed(() => {
       return store.state.blogPhotoFileURL;
@@ -129,14 +144,14 @@ export default {
 
     const uploadBlog = async () => {
       if (getBlogTitle.value.length !== 0 && getBlogHTML.value.length !== 0) {
-        if (fileRef.value) {
+        if (inputFile.value) {
           loading.value = true;
           const docRef = storageRef(
             storage,
             `dream-diary-blog/BlogCoverPhotos/${getBlogPhotoName.value}`,
           );
           try {
-            await uploadBytes(docRef, fileRef.value);
+            await uploadBytes(docRef, inputFile.value);
             const downloadURL = await getDownloadURL(docRef);
             const timestamp = Date.now();
             const blogPostsDocRef = collection(db, "blogPosts");
@@ -153,8 +168,8 @@ export default {
             await updateDoc(newBlogPostRef, { blogID: blogID });
             await store.dispatch("getPost");
             loading.value = false;
-
             router.push({ name: "ViewBlog", params: { blogId: blogID } });
+            store.dispatch("resetStateData");
           } catch (error) {
             console.log(error);
             loading.value = false;
@@ -178,16 +193,21 @@ export default {
 
     const fileChange = () => {
       fileRef.value = blogPhotoRef.value.files[0];
-      // fileRef.value = selectedFile
       const fileName = fileRef.value.name;
       const fileURL = URL.createObjectURL(fileRef.value);
       store.commit("fileNameChange", fileName);
       store.commit("createFileURL", fileURL);
+      store.commit("setInputFile", fileRef.value)
     };
 
     const openPreview = () => {
       store.commit("openPhotoPreview");
     };
+
+    const showPreview = () => {
+      showPostPreview.value = !showPostPreview.value;
+    };
+
     return {
       error,
       errorMsg,
@@ -206,6 +226,8 @@ export default {
       imgUploaderModule,
       uploadBlog,
       loading,
+      showPostPreview,
+      showPreview
     };
   },
 };

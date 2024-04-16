@@ -10,6 +10,27 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
+
+// let data = {
+//   blogPosts: [],
+//   postLoaded: null,
+//   blogHTML: "Write your blog title in here...",
+//   blogTitle: "",
+//   blogPhotoName: "",
+//   blogPhotoFileURL: null,
+//   blogPhotoPreview: null,
+//   editPost: null,
+//   user: null,
+//   profile: null,
+//   profileEmail: null,
+//   profileFirstName: null,
+//   profileLastName: null,
+//   profileUsername: null,
+//   profileId: null,
+//   profileInitials: null,
+//   profileAdmin: null,
+//   inputFile: null,
+// };
 const storeData = {
   state: {
     blogPosts: [],
@@ -29,6 +50,7 @@ const storeData = {
     profileId: null,
     profileInitials: null,
     profileAdmin: null,
+    inputFile: null,
   },
 
   getters: {
@@ -116,6 +138,18 @@ const storeData = {
       state.blogPhotoName = payload.blogCoverPhotoName;
       state.blogPhotoFileURL = payload.blogCoverPhoto;
     },
+
+    setInputFile(state, file) {
+      state.inputFile = file;
+    },
+
+    resetState(state) {
+      (state.blogHTML = "Write your blog title in here..."),
+        (state.blogTitle = ""),
+        (state.blogPhotoName = ""),
+        (state.blogPhotoFileURL = null),
+        (state.blogPhotoPreview = null);
+    },
   },
 
   actions: {
@@ -180,6 +214,10 @@ const storeData = {
     async updatePost({ commit, dispatch }, payload) {
       commit("filterBlogPost", payload);
       await dispatch("getPost");
+    },
+
+    resetStateData({ commit }) {
+      commit("resetState");
     },
   },
 
