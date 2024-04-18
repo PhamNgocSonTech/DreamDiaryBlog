@@ -10,17 +10,41 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
+
+// let data = {
+//   blogPosts: [],
+//   postLoaded: null,
+//   blogHTML: "Write your blog title in here...",
+//   blogTitle: "",
+//   blogPhotoName: "",
+//   blogPhotoFileURL: null,
+//   blogPhotoPreview: null,
+//   editPost: null,
+//   user: null,
+//   profile: null,
+//   profileEmail: null,
+//   profileFirstName: null,
+//   profileLastName: null,
+//   profileUsername: null,
+//   profileId: null,
+//   profileInitials: null,
+//   profileAdmin: null,
+//   inputFile: null,
+// };
 const storeData = {
   state: {
     blogPosts: [],
     postLoaded: null,
+
     blogHTML: "Write your blog title in here...",
     blogTitle: "",
     blogPhotoName: "",
     blogPhotoFileURL: null,
     blogPhotoPreview: null,
+    blogUserName: null,
     editPost: null,
     user: null,
+
     profile: null,
     profileEmail: null,
     profileFirstName: null,
@@ -29,6 +53,9 @@ const storeData = {
     profileId: null,
     profileInitials: null,
     profileAdmin: null,
+
+    inputFile: null,
+    authorName: null,
   },
 
   getters: {
@@ -116,16 +143,28 @@ const storeData = {
       state.blogPhotoName = payload.blogCoverPhotoName;
       state.blogPhotoFileURL = payload.blogCoverPhoto;
     },
+
+    setInputFile(state, file) {
+      state.inputFile = file;
+    },
+
+    resetState(state) {
+      (state.blogHTML = "Write your blog title in here..."),
+        (state.blogTitle = ""),
+        (state.blogPhotoName = ""),
+        (state.blogPhotoFileURL = null),
+        (state.blogPhotoPreview = null);
+    },
   },
 
   actions: {
     async getCurrentUser({ commit }, userData) {
       try {
         const { userId, admin } = userData;
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          commit("setProfileInfo", docSnap);
+        const docUserRef = doc(db, "users", userId);
+        const docUserData = await getDoc(docUserRef);
+        if (docUserData.exists()) {
+          commit("setProfileInfo", docUserData);
           commit("setProfileInitials");
           commit("setProfileAdmin", admin);
         } else {
@@ -156,19 +195,39 @@ const storeData = {
         orderBy("date", "desc")
       );
       const querySnapshot = await getDocs(postResult);
-      querySnapshot.forEach((doc) => {
-        if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+      for (const docs of querySnapshot.docs) {
+        if (!state.blogPosts.some((post) => post.blogID === docs.id)) {
+          const docUserRef = doc(db, "users", docs.data().profileId);
+          const docUserData = await getDoc(docUserRef);
+          const username = docUserData.data().username;
+
           const data = {
-            blogID: doc.data().blogID,
-            blogTitle: doc.data().blogTitle,
-            blogHTML: doc.data().blogHTML,
-            blogCoverPhoto: doc.data().blogCoverPhoto,
-            blogCoverPhotoName: doc.data().blogCoverPhotoName,
-            blogDate: doc.data().date,
+            blogID: docs.data().blogID,
+            blogTitle: docs.data().blogTitle,
+            blogHTML: docs.data().blogHTML,
+            blogCoverPhoto: docs.data().blogCoverPhoto,
+            blogCoverPhotoName: docs.data().blogCoverPhotoName,
+            blogDate: docs.data().date,
+            blogUserName: username,
           };
           state.blogPosts.push(data);
         }
-      });
+      }
+      // querySnapshot.forEach((doc) => {
+      //   if (!state.blogPosts.some((post) => post.blogID === doc.id)) {
+      //     const data = {
+      //       blogID: doc.data().blogID,
+      //       blogTitle: doc.data().blogTitle,
+      //       blogHTML: doc.data().blogHTML,
+      //       blogCoverPhoto: doc.data().blogCoverPhoto,
+      //       blogCoverPhotoName: doc.data().blogCoverPhotoName,
+      //       blogDate: doc.data().date,
+      //     };
+      //     await dispatch("getAuthorPost", doc.data().profileId);
+      //     console.log("profileId:", doc.data().profileId);
+      //     state.blogPosts.push(data);
+      //   }
+      // });
       state.postLoaded = true;
     },
 
@@ -180,6 +239,10 @@ const storeData = {
     async updatePost({ commit, dispatch }, payload) {
       commit("filterBlogPost", payload);
       await dispatch("getPost");
+    },
+
+    resetStateData({ commit }) {
+      commit("resetState");
     },
   },
 

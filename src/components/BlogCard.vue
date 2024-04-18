@@ -19,7 +19,7 @@
           new Date(post.blogDate).toDateString("en-us", { dateStyle: "long" })
         }}
       </h6>
-      <span class="author-name">Author: {{ username }}</span> <!-- Thêm thẻ tác giả -->
+      <span class="author-name">Author: {{ post.blogUserName }}</span> <!-- Thêm thẻ tác giả -->
 
       <router-link :to="{ name: 'ViewBlog', params: { blogId: post.blogID } }" class="link">
         View The Post
@@ -42,7 +42,6 @@ export default {
     const store = useStore();
     const post = ref(props.post);
     const router = useRouter()
-
     const editPost = computed(() => {
       return store.state.editPost;
     });
@@ -59,14 +58,11 @@ export default {
       router.push({ name: 'EditBlog', params: { blogId: post.value.blogID } })
     }
 
-    const username = computed(() => {
-      return store.state.profileUsername;
-    })
     // const getImgSrc = (photo) => {
     //   return require(`../assets/blogCards/${photo}.jpg`);
     // };
 
-    return { editPost, deleteBlogPost, editBlogPost, username };
+    return { editPost, deleteBlogPost, editBlogPost };
   },
 };
 </script>
