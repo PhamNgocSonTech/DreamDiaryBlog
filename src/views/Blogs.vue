@@ -5,13 +5,17 @@
         <span>Toggle Edit Post</span>
         <input type="checkbox" v-model="editPost" />
       </div>
-      <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index" />
+      <BlogCard v-show="admin" :post="post" v-for="(post, index) in blogPostsWithProfileId" :key="index" />
+      <BlogCard v-show="!admin" :post="post" v-for="(post, index) in blogPosts" :key="index" />
     </div>
+
   </div>
 </template>
 
 <script>
 import BlogCard from "@/components/BlogCard.vue";
+// import { doc } from "firebase/firestore";
+// import { db } from "@/firebase/firebaseInit";
 import { computed, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -32,14 +36,24 @@ export default {
     const blogPosts = computed(() => {
       return store.state.blogPosts;
     });
+
     const admin = computed(() => {
       return store.state.profileAdmin;
+    });
+
+    const profileId = computed(() => {
+      return store.state.profileId;
+    });
+
+    const blogPostsWithProfileId = computed(() => {
+      return store.state.blogPosts.filter(post => post.profileId === store.state.profileId);
     });
 
     onBeforeUnmount(() => {
       store.commit("toggleEditPost", false);
     });
-    return { editPost, blogPosts, admin };
+
+    return { editPost, blogPostsWithProfileId, blogPosts, admin, profileId };
   },
   // computed: {
   //   sampleBlogCards() {
