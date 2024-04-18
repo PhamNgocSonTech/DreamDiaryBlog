@@ -4,7 +4,7 @@
             <h2>{{ currentBlog[0].blogTitle }}</h2>
             <h4>Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}
             </h4>
-            <span class="author-name" :class="{ 'is-admin': isAdmin }">Author: {{ username }} </span>
+            <span class="author-name" :class="{ 'is-admin': isAdmin }">Author: {{ currentBlog[0].blogUserName }} </span>
             <img :src="currentBlog[0].blogCoverPhoto" alt="">
             <div class="post-content ql-editor" v-html="currentBlog[0].blogHTML"></div>
         </div>
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+// import { doc, getDoc } from 'firebase/firestore';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -31,7 +32,7 @@ export default {
         }
 
         const username = computed(() => {
-            return store.state.profileUsername;
+            return store.state.blogUserName;
         })
 
         const isAdmin = computed(() => {
