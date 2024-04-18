@@ -45,14 +45,13 @@ const storeData = {
     editPost: null,
     user: null,
 
-    profile: null,
     profileEmail: null,
     profileFirstName: null,
     profileLastName: null,
     profileUsername: null,
     profileId: null,
     profileInitials: null,
-    profileAdmin: null,
+    profileAdmin: false,
 
     inputFile: null,
     authorName: null,
@@ -148,12 +147,20 @@ const storeData = {
       state.inputFile = file;
     },
 
-    resetState(state) {
+    resetBlogState(state) {
       (state.blogHTML = "Write your blog title in here..."),
         (state.blogTitle = ""),
         (state.blogPhotoName = ""),
         (state.blogPhotoFileURL = null),
         (state.blogPhotoPreview = null);
+    },
+
+    resetProfile(state) {
+      state.profileId = null;
+      state.profileEmail = null;
+      state.profileFirstName = null;
+      state.profileLastName = null;
+      state.profileUsername = null;
     },
   },
 
@@ -209,6 +216,7 @@ const storeData = {
             blogCoverPhotoName: docs.data().blogCoverPhotoName,
             blogDate: docs.data().date,
             blogUserName: username,
+            profileId: docs.data().profileId,
           };
           state.blogPosts.push(data);
         }
@@ -242,7 +250,11 @@ const storeData = {
     },
 
     resetStateData({ commit }) {
-      commit("resetState");
+      commit("resetBlogState");
+    },
+
+    resetProfileData({ commit }) {
+      commit("resetProfile");
     },
   },
 

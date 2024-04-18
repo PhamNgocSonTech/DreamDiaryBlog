@@ -9,24 +9,16 @@
       <div class="inputs">
         <div class="input">
           <input type="email" placeholder="Email" v-model="email" />
-          <InlineSvg
-            :src="require('@/assets/Icons/envelope-regular.svg')"
-            class="icon"
-          />
+          <InlineSvg :src="require('@/assets/Icons/envelope-regular.svg')" class="icon" />
         </div>
 
         <div class="input">
           <input type="password" placeholder="Password" v-model="password" />
-          <InlineSvg
-            :src="require('@/assets/Icons/lock-alt-solid.svg')"
-            class="icon"
-          />
+          <InlineSvg :src="require('@/assets/Icons/lock-alt-solid.svg')" class="icon" />
         </div>
         <div v-show="error" class="error">{{ errorMsg }}</div>
       </div>
-      <router-link class="forgot-password" to="/forgot-password"
-        >Forgot Password</router-link
-      >
+      <router-link class="forgot-password" to="/forgot-password">Forgot Password</router-link>
       <button @click.prevent="login">Login</button>
       <div class="angle"></div>
     </form>
@@ -58,6 +50,7 @@ export default {
           await signInWithEmailAndPassword(auth, email.value, password.value);
           // console.log("User Credential: ", userCredential.user.uid);
           router.push("/");
+          // window.location.reload();
         } catch (err) {
           error.value = true;
           errorMsg.value = err.message;
@@ -87,6 +80,7 @@ export default {
   align-self: center;
   margin: 0 auto;
   width: 90%;
+
   @media (min-width: 900px) {
     width: 100%;
   }
@@ -107,6 +101,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex: 1;
+
     @media (min-width: 900px) {
       padding: 0 50px;
     }
@@ -116,6 +111,7 @@ export default {
       font-size: 32px;
       color: #303030;
       margin-bottom: 40px;
+
       @media (min-width: 900px) {
         font-size: 40px;
       }
@@ -131,6 +127,7 @@ export default {
         justify-content: center;
         align-items: center;
         margin-bottom: 8px;
+
         input {
           width: 100%;
           border: none;
@@ -173,6 +170,7 @@ export default {
       width: 60px;
       right: -30px;
       height: 101%;
+
       @media (min-width: 900px) {
         display: initial;
       }
@@ -186,6 +184,7 @@ export default {
     background-image: url("../assets/background.png");
     width: 100%;
     height: 100%;
+
     @media (min-width: 900px) {
       display: initial;
     }
