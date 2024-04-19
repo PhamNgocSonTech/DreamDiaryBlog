@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/views/Home.vue";
-import Blogs from "@/views/Blogs.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import ForgotPass from "@/views/ForgotPassword.vue";
@@ -12,6 +11,8 @@ import BlogPreview from "@/views/BlogPreview.vue";
 import ViewBlog from "@/views/ViewBlog.vue";
 import EditBlog from "@/views/EditBlog.vue";
 import NotFound from "../components/error/NotFound.vue";
+import MyBlogs from "@/views/MyBlogs.vue";
+import TrendingBlogs from "@/views/TrendingBlogs.vue";
 import { auth } from "@/firebase/firebaseInit";
 import { onAuthStateChanged } from "firebase/auth";
 
@@ -38,10 +39,17 @@ const routes = [
   },
 
   {
-    path: "/blogs",
-    name: "Blogs",
-    component: Blogs,
-    meta: { title: "Blogs", requiresAuth: true },
+    path: "/my-blogs",
+    name: "My Blogs",
+    component: MyBlogs,
+    meta: { title: "My Blogs", requiresAuth: true, requiresAdmin: true },
+  },
+
+  {
+    path: "/trending",
+    name: "Trending Blogs",
+    component: TrendingBlogs,
+    meta: { title: "Trending Blogs", requiresAuth: false, requiresAdmin: true },
   },
 
   {
