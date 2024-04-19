@@ -11,26 +11,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-// let data = {
-//   blogPosts: [],
-//   postLoaded: null,
-//   blogHTML: "Write your blog title in here...",
-//   blogTitle: "",
-//   blogPhotoName: "",
-//   blogPhotoFileURL: null,
-//   blogPhotoPreview: null,
-//   editPost: null,
-//   user: null,
-//   profile: null,
-//   profileEmail: null,
-//   profileFirstName: null,
-//   profileLastName: null,
-//   profileUsername: null,
-//   profileId: null,
-//   profileInitials: null,
-//   profileAdmin: null,
-//   inputFile: null,
-// };
 const storeData = {
   state: {
     blogPosts: [],
@@ -63,7 +43,7 @@ const storeData = {
     },
 
     blogPostsCards(state) {
-      return state.blogPosts.slice(2, 6);
+      return state.blogPosts.slice(0, 4);
     },
   },
 
@@ -154,14 +134,6 @@ const storeData = {
         (state.blogPhotoFileURL = null),
         (state.blogPhotoPreview = null);
     },
-
-    resetProfile(state) {
-      state.profileId = null;
-      state.profileEmail = null;
-      state.profileFirstName = null;
-      state.profileLastName = null;
-      state.profileUsername = null;
-    },
   },
 
   actions: {
@@ -251,10 +223,6 @@ const storeData = {
 
     resetStateData({ commit }) {
       commit("resetBlogState");
-    },
-
-    resetProfileData({ commit }) {
-      commit("resetProfile");
     },
   },
 
