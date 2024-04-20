@@ -11,26 +11,6 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
-// let data = {
-//   blogPosts: [],
-//   postLoaded: null,
-//   blogHTML: "Write your blog title in here...",
-//   blogTitle: "",
-//   blogPhotoName: "",
-//   blogPhotoFileURL: null,
-//   blogPhotoPreview: null,
-//   editPost: null,
-//   user: null,
-//   profile: null,
-//   profileEmail: null,
-//   profileFirstName: null,
-//   profileLastName: null,
-//   profileUsername: null,
-//   profileId: null,
-//   profileInitials: null,
-//   profileAdmin: null,
-//   inputFile: null,
-// };
 const storeData = {
   state: {
     blogPosts: [],
@@ -45,14 +25,13 @@ const storeData = {
     editPost: null,
     user: null,
 
-    profile: null,
     profileEmail: null,
     profileFirstName: null,
     profileLastName: null,
     profileUsername: null,
     profileId: null,
     profileInitials: null,
-    profileAdmin: null,
+    profileAdmin: false,
 
     inputFile: null,
     authorName: null,
@@ -64,7 +43,7 @@ const storeData = {
     },
 
     blogPostsCards(state) {
-      return state.blogPosts.slice(2, 6);
+      return state.blogPosts.slice(0, 4);
     },
   },
 
@@ -148,7 +127,7 @@ const storeData = {
       state.inputFile = file;
     },
 
-    resetState(state) {
+    resetBlogState(state) {
       (state.blogHTML = "Write your blog title in here..."),
         (state.blogTitle = ""),
         (state.blogPhotoName = ""),
@@ -209,6 +188,7 @@ const storeData = {
             blogCoverPhotoName: docs.data().blogCoverPhotoName,
             blogDate: docs.data().date,
             blogUserName: username,
+            profileId: docs.data().profileId,
           };
           state.blogPosts.push(data);
         }
@@ -242,7 +222,7 @@ const storeData = {
     },
 
     resetStateData({ commit }) {
-      commit("resetState");
+      commit("resetBlogState");
     },
   },
 

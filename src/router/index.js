@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "@/views/Home.vue";
-import Blogs from "@/views/Blogs.vue";
 import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import ForgotPass from "@/views/ForgotPassword.vue";
@@ -12,8 +11,10 @@ import BlogPreview from "@/views/BlogPreview.vue";
 import ViewBlog from "@/views/ViewBlog.vue";
 import EditBlog from "@/views/EditBlog.vue";
 import NotFound from "../components/error/NotFound.vue";
+import MyBlogs from "@/views/MyBlogs.vue";
+import TrendingBlogs from "@/views/TrendingBlogs.vue";
 import { auth } from "@/firebase/firebaseInit";
-import { onAuthStateChanged } from "firebase/auth";
+// import { onAuthStateChanged } from "firebase/auth";
 
 const routes = [
   {
@@ -38,10 +39,17 @@ const routes = [
   },
 
   {
-    path: "/blogs",
-    name: "Blogs",
-    component: Blogs,
-    meta: { title: "Blogs", requiresAuth: false },
+    path: "/my-blogs",
+    name: "My Blogs",
+    component: MyBlogs,
+    meta: { title: "My Blogs", requiresAuth: true, requiresAdmin: true },
+  },
+
+  {
+    path: "/trending",
+    name: "Trending Blogs",
+    component: TrendingBlogs,
+    meta: { title: "Trending Blogs", requiresAuth: false, requiresAdmin: true },
   },
 
   {
@@ -117,40 +125,63 @@ const router = createRouter({
   // },
 });
 
-onAuthStateChanged(auth, async (user) => {
+router.beforeEach(async (to, from, next) => {
+  let user = auth.currentUser;
+  console.log("user: " + user);
+  let admin = null;
   if (user) {
-    // Logged In
-    const token = await user.getIdTokenResult();
-    const isAdmin = token.claims.admin;
-
-    // Setup routes for user logged in
-    router.beforeEach((to, from, next) => {
-      // Check routes if require login
-      if (to.meta.requiresAuth) {
-        //Check user is admin and routes require admin
-        if (isAdmin && to.meta.requiresAdmin) {
-          next(); // Allow acess
-        } else if (to.meta.requiresAdmin) {
-          next({ name: "Home" }); //not admin redictect Home Page
-        } else {
-          next(); //not require admin, allow acess routes
-        }
-      } else {
-        next(); //route not require login, allow access
-      }
-    });
-  } else {
-    // If user not login
-    router.beforeEach((to, from, next) => {
-      //check route not require login
-      if (!to.meta.requiresAuth) {
-        next(); // allow access
-      } else {
-        next({ name: "Login" }); // redictect Login Page
-      }
-    });
+    let token = await user.getIdTokenResult();
+    admin = token.claims.admin;
   }
+  if (to.matched.some((res) => res.meta.requiresAuth)) {
+    if (user) {
+      if (to.matched.some((res) => res.meta.requiresAdmin)) {
+        if (admin) {
+          return next();
+        }
+        return next({ name: "Home" });
+      }
+      return next();
+    }
+    return next({ name: "Login" });
+  }
+  return next();
 });
+
+// onAuthStateChanged(auth, async (user) => {
+//   if (user) {
+//     // Logged In
+//     const token = await user.getIdTokenResult();
+//     const isAdmin = token.claims.admin;
+
+//     // Setup routes for user logged in
+//     router.beforeEach((to, from, next) => {
+//       // Check routes if require login
+//       if (to.meta.requiresAuth) {
+//         //Check user is admin and routes require admin
+//         if (isAdmin && to.meta.requiresAdmin) {
+//           next(); // Allow acess
+//         } else if (to.meta.requiresAdmin) {
+//           next({ name: "Home" }); //not admin redictect Home Page
+//         } else {
+//           next(); //not require admin, allow acess routes
+//         }
+//       } else {
+//         next(); //route not require login, allow access
+//       }
+//     });
+//   } else {
+//     // If user not login
+//     router.beforeEach((to, from, next) => {
+//       //check route not require login
+//       if (!to.meta.requiresAuth) {
+//         next(); // allow access
+//       } else {
+//         next({ name: "Login" }); // redictect Login Page
+//       }
+//     });
+//   }
+// });
 
 // onAuthStateChanged(auth, async (user) => {
 //   if (user) {

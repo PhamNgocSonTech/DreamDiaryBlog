@@ -7,7 +7,8 @@
       <div class="nav-links">
         <ul v-show="!mobile">
           <router-link class="link" to="/">Home</router-link>
-          <router-link class="link" to="/blogs">Blogs</router-link>
+          <router-link class="link" to="/trending">Trending Blogs</router-link>
+          <router-link v-if="admin" class="link" to="/my-blogs">My Blogs</router-link>
           <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
           <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
         </ul>
@@ -140,9 +141,9 @@ export default {
 
     const signOutEvent = () => {
       signOut(auth);
-      // window.location.reload();
+      // store.dispatch("resetProfileData")
       router.push({ name: 'Home' })
-      console.log("Sign Out Successfully");
+      window.location.reload();
     };
     onMounted(() => {
       window.addEventListener("click", handleClickOutside);
