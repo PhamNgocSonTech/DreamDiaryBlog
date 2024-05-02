@@ -52,9 +52,9 @@ export default {
       welcomeScreen: {
         title: "Welcome to Dream Diary Blogs",
         blogPost:
-          "Weekly blog article with all things programming including HTML, CSS and JS.",
+          "Learn something news every day",
         welcomeScreen: true,
-        photo: "coding",
+        photo: "welcome-template",
       },
     };
   },

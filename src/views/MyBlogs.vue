@@ -6,7 +6,7 @@
         <input type="checkbox" v-model="editPost" />
       </div>
       <BlogCard v-show="admin" :post="post" v-for="(post, index) in blogPostsWithProfileId" :key="index" />
-      <BlogCard v-show="!admin" :post="post" v-for="(post, index) in blogPosts" :key="index" />
+      <!-- <BlogCard :post="post" v-for="(post, index) in blogPosts" :key="index" /> -->
     </div>
 
   </div>
