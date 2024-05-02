@@ -181,7 +181,7 @@ export default {
     display: none;
     flex: 2;
     background-size: cover;
-    background-image: url("../assets/background.png");
+    background-image: url("../assets/background.jpg");
     width: 100%;
     height: 100%;
 
