@@ -59,7 +59,8 @@
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
         <router-link class="link" to="/">Home</router-link>
-        <router-link class="link" to="/blogs">Blogs</router-link>
+        <router-link class="link" to="/trending">Trending Blogs</router-link>
+        <router-link v-if="admin" class="link" to="/my-blogs">My Blogs</router-link>
         <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
         <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
       </ul>
