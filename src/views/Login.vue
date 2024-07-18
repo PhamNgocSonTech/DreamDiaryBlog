@@ -20,12 +20,12 @@
       </div>
       <router-link class="forgot-password" to="/forgot-password">Forgot Password</router-link>
       <button @click.prevent="login">Login</button>
+      <!-- <button><a href="/">Home</a></button> -->
       <div class="angle"></div>
     </form>
     <div class="background"></div>
   </div>
 </template>
-
 <script>
 import { ref } from "vue";
 import InlineSvg from "vue-inline-svg";
