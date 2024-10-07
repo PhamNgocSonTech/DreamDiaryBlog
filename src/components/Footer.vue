@@ -85,7 +85,7 @@ footer {
 
     @media (min-width: 800px) {
       flex-direction: row;
-      gap: 0px;
+      gap: 0;
     }
 
     >div {
