@@ -2,8 +2,8 @@
   <div class="blog-wrapper" :class="{ 'no-user': !userData }">
     <div class="blog-content">
       <div>
-        <h2 v-if="post.welcomeScreen">{{ post.blogTitle }}</h2>
-        <h2 v-else>{{ post.blogTitle }}</h2>
+        <h1 v-if="post.welcomeScreen">{{ post.blogTitle }}</h1>
+        <h1 v-else>{{ post.blogTitle }}</h1>
         <p v-if="post.welcomeScreen">{{ post.blogPost }}</p>
         <p v-else class="content-preview" v-html="post.blogHTML"></p>
         <router-link v-if="post.welcomeScreen" to="/login" class="link link-light">Login/Register
@@ -92,7 +92,7 @@ export default {
         padding: 0 24px;
       }
 
-      h2 {
+      h1 {
         font-size: 32px;
         // font-weight: 300;
         font-weight: bold;

@@ -32,7 +32,7 @@
         <div v-if="showPostPreview" class="showPostPreview">
           <div class="post-view">
             <div class="container quillWrapper">
-              <h2>{{ getBlogTitle }}</h2>
+              <h1>{{ getBlogTitle }}</h1>
               <img :src="getBlogFileUrl" alt="" />
               <div class="post-content ql-editor" v-html="getBlogHTML"></div>
             </div>

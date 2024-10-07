@@ -1,7 +1,7 @@
 <template>
     <div class="post-view" v-if="currentBlog">
         <div class="container quillWrapper">
-            <h2>{{ currentBlog[0].blogTitle }}</h2>
+            <h1>{{ currentBlog[0].blogTitle }}</h1>
             <h4>Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}
             </h4>
             <span class="author-name" :class="{ 'is-admin': isAdmin }">Author: {{ currentBlog[0].blogUserName }} </span>
@@ -65,8 +65,8 @@ export default {
         float: left;
     }
 
-    h2 {
-        font-weight: bold;
+    h1 {
+        //font-weight: bold;
         font-size: 48px;
     }
 
