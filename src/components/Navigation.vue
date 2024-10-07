@@ -2,12 +2,12 @@
   <header>
     <nav class="container">
       <div class="branding">
-        <router-link class="header" to="/">Dream Diary Blogs</router-link>
+        <router-link class="header" to="/">DDBlogs</router-link>
       </div>
       <div class="nav-links">
         <ul v-show="!mobile">
           <router-link class="link" to="/">Home</router-link>
-          <router-link class="link" to="/trending">Trending Blogs</router-link>
+          <router-link class="link" to="/trending">Hot Blogs</router-link>
           <router-link v-if="admin" class="link" to="/my-blogs">My Blogs</router-link>
           <router-link v-if="admin" class="link" to="/create-post">Create Blog</router-link>
           <router-link v-if="!userData" class="link" to="/login">Login/Register</router-link>
@@ -243,6 +243,7 @@ header {
       flex: 1;
       align-items: center;
       justify-content: flex-end;
+      gap: 32px;
 
       ul {
         margin-right: 32px;
@@ -267,6 +268,7 @@ header {
         border-radius: 50%;
         color: #fff;
         background-color: #303030;
+        right: 25px;
 
         span {
           pointer-events: none;
@@ -352,7 +354,7 @@ header {
     cursor: pointer;
     position: absolute;
     top: 32px;
-    right: 25px;
+    right: 10px;
     height: 25px;
     width: auto;
   }

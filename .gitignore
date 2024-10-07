@@ -23,3 +23,5 @@ pnpm-debug.log*
 *.sw?
 node_modules
 node_modules
+/src/assets/new-logo.svg
+/src/assets/new-logo.jfif
