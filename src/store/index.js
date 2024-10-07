@@ -16,7 +16,7 @@ const storeData = {
     blogPosts: [],
     postLoaded: null,
 
-    blogHTML: "Write your blog title in here...",
+    blogHTML: "Write your content in here...",
     blogTitle: "",
     blogPhotoName: "",
     blogPhotoFileURL: null,

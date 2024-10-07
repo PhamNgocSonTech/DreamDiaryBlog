@@ -12,13 +12,13 @@
     </div>
     <img :src="post.blogCoverPhoto" alt="" />
     <div class="info">
-      <h4>{{ post.blogTitle }}</h4>
-      <h6>
+      <h3>{{ post.blogTitle }}</h3>
+      <h4>
         Posted on:
         {{
           new Date(post.blogDate).toDateString("en-us", { dateStyle: "long" })
         }}
-      </h6>
+      </h4>
       <span class="author-name">Author: {{ post.blogUserName }}</span> <!-- Thêm thẻ tác giả -->
 
       <router-link :to="{ name: 'ViewBlog', params: { blogId: post.blogID } }" class="link">
@@ -176,13 +176,13 @@ export default {
     padding: 32px 16px;
     color: #000;
 
-    h4 {
+    h3 {
       padding-bottom: 8px;
       font-size: 20px;
       font-weight: bold;
     }
 
-    h6 {
+    h4 {
       font-weight: 400;
       font-size: 12px;
       padding-bottom: 6px;

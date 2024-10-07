@@ -127,7 +127,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   let user = auth.currentUser;
-  console.log("user: " + user);
   let admin = null;
   if (user) {
     let token = await user.getIdTokenResult();
