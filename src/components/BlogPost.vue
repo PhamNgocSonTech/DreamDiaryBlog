@@ -5,7 +5,7 @@
         <h1 v-if="post.welcomeScreen">{{ post.blogTitle }}</h1>
         <h1 v-else>{{ post.blogTitle }}</h1>
         <p v-if="post.welcomeScreen">{{ post.blogPost }}</p>
-        <p v-else class="content-preview" v-html="post.blogHTML"></p>
+<!--        <p v-else class="content-preview" v-html="post.blogHTML"></p>-->
         <router-link v-if="post.welcomeScreen" to="/login" class="link link-light">Login/Register
           <InlineSvg :src="require('../assets/Icons/arrow-right-light.svg')" class="arrow arrow-light" />
         </router-link>
@@ -98,6 +98,12 @@ export default {
         font-weight: bold;
         text-transform: uppercase;
         margin-bottom: 24px;
+        //white-space: nowrap;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        //text-overflow: ellipsis;
 
         @media (min-width: 700px) {
           font-size: 40px;
