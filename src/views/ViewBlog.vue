@@ -61,13 +61,15 @@ export default {
     h4 {
         font-weight: 400;
         font-size: 14px;
-        margin-bottom: 24px;
+        //margin-bottom: 24px;
         float: left;
     }
 
     h1 {
         //font-weight: bold;
         font-size: 48px;
+        margin-bottom: 27px;
+
     }
 
     .author-name {
