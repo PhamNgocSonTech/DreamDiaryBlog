@@ -2,9 +2,11 @@
     <div class="post-view" v-if="currentBlog">
         <div class="container quillWrapper">
             <h1>{{ currentBlog[0].blogTitle }}</h1>
-            <h4>Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }}
-            </h4>
+          <div class="info-wrap">
+            <h4 class="post-time">Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }} </h4> <br>
+            <span class="read-time">{{readingTime}} min read</span>
             <span class="author-name" :class="{ 'is-admin': isAdmin }">Author: {{ currentBlog[0].blogUserName }} </span>
+          </div>
             <img :src="currentBlog[0].blogCoverPhoto" alt="">
             <div class="post-content ql-editor" v-html="currentBlog[0].blogHTML"></div>
         </div>
@@ -39,6 +41,22 @@ export default {
             return store.state.profileAdmin;
         });
 
+        const removeHtmlTags = (html) => {
+          return html.replace(/<[^>]*>/g, '')
+        }
+
+        const wordCount = computed(() => {
+          if(!currentBlog.value || !currentBlog.value[0]?.blogHTML) return 0;
+          const plainText = removeHtmlTags(currentBlog.value[0].blogHTML)
+          return plainText.split(/\s+/).filter(word => word.length > 0).length
+        })
+
+      const readingTime = computed(() => {
+        const wordsPerMin = 200;
+        const totalReadingTime = wordCount.value / wordsPerMin
+        return Math.round(totalReadingTime)
+      })
+
         onMounted(() => {
             loadBlog()
         })
@@ -46,7 +64,8 @@ export default {
             currentBlog,
             loadBlog,
             username,
-            isAdmin
+            isAdmin,
+            readingTime
         }
     }
 };
@@ -58,12 +77,14 @@ export default {
     // flex-direction: row;
     // justify-content: space-between;
 
-    h4 {
+  .info-wrap h4 {
         font-weight: 400;
         font-size: 14px;
         //margin-bottom: 24px;
         float: left;
     }
+
+
 
     h1 {
         //font-weight: bold;
