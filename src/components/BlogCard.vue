@@ -12,7 +12,7 @@
     </div>
     <img :src="post.blogCoverPhoto" alt="" />
     <div class="info">
-      <h3>{{ post.blogTitle }}</h3>
+      <h3 class="line-clamp">{{ post.blogTitle }}</h3>
       <h4>
         Posted on:
         {{
@@ -68,6 +68,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: var(--line-clamp);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .blog-card {
   position: relative;
   cursor: pointer;
@@ -166,6 +174,7 @@ export default {
     width: 100%;
     min-height: 200px;
     object-fit: cover;
+    pointer-events: none;
   }
 
   .info {
@@ -177,9 +186,12 @@ export default {
     color: #000;
 
     h3 {
+      --line-clamp: 2;
       padding-bottom: 8px;
       font-size: 20px;
       font-weight: bold;
+      line-height: 1.7;
+      //word-break: break-all;
     }
 
     h4 {

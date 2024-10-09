@@ -111,5 +111,10 @@ export default {
         margin-left: 5px;
         vertical-align: middle;
     }
+
+  img {
+    pointer-events: none;
+
+  }
 }
 </style>
