@@ -4,7 +4,7 @@
             <h1>{{ currentBlog[0].blogTitle }}</h1>
           <div class="info-wrap">
             <h4 class="post-time">Posted on: {{ new Date(currentBlog[0].blogDate).toLocaleString("en-us", { dateStyle: "long" }) }} </h4> <br>
-            <span class="read-time">{{readingTime}} min read</span>
+            <span class="read-time">Estimated: {{readingTime}} min read</span>
             <span class="author-name" :class="{ 'is-admin': isAdmin }">Author: {{ currentBlog[0].blogUserName }} </span>
           </div>
             <img :src="currentBlog[0].blogCoverPhoto" alt="">
@@ -45,15 +45,30 @@ export default {
           return html.replace(/<[^>]*>/g, '')
         }
 
-        const wordCount = computed(() => {
+      const getAllImgTags = (html) => {
+          const imgMatches = html.match(/<img[^>]*>/g); //get all img tag
+          return imgMatches ? imgMatches.length : 0;
+      }
+
+        const totalWordImg = computed(() => {
           if(!currentBlog.value || !currentBlog.value[0]?.blogHTML) return 0;
           const plainText = removeHtmlTags(currentBlog.value[0].blogHTML)
-          return plainText.split(/\s+/).filter(word => word.length > 0).length
+          const imgCount = getAllImgTags(currentBlog.value[0].blogHTML)
+          const wordCount = plainText.split(/\s+/).filter(word => word.length > 0).length
+          return {wordCount, imgCount}
         })
 
+
       const readingTime = computed(() => {
-        const wordsPerMin = 200;
-        const totalReadingTime = wordCount.value / wordsPerMin
+        const wordsPerMin = 250;
+        const {wordCount, imgCount} = totalWordImg.value
+        const textReadingTime = wordCount / wordsPerMin //time read text
+        const imgReadingTime = imgCount  * (15 /60) //time read img 10 second => 0.2 min
+        const totalReadingTime = textReadingTime + imgReadingTime;
+        console.log(totalReadingTime)
+        if(totalReadingTime < 1) {
+          return 'Under 1 '
+        }
         return Math.round(totalReadingTime)
       })
 
